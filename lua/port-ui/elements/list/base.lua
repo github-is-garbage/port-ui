@@ -73,11 +73,11 @@ end
 --]]
 
 function ELEMENT:CalculatePixelsWidth(Pixels) -- The viewport fucks with aspect ratio, make sure our pixels are actual pixels
-	return math.Remap(Pixels, 0, self:GetWidth(), 0, Renderer.ScreenWidth)
+	return math.Remap(Pixels, 0, self.m_iWidth, 0, Renderer.ScreenWidth)
 end
 
 function ELEMENT:CalculatePixelsHeight(Pixels)
-	return math.Remap(Pixels, 0, self:GetHeight(), 0, Renderer.ScreenHeight)
+	return math.Remap(Pixels, 0, self.m_iHeight, 0, Renderer.ScreenHeight)
 end
 
 function ELEMENT:GetX()
@@ -93,22 +93,18 @@ function ELEMENT:GetPos()
 end
 
 function ELEMENT:GetRelativeX()
-	local Parent = self:GetParent()
-
-	if IsValid(Parent) then
-		return Parent:GetRelativeX() + self:GetX()
+	if IsValid(self.m_Parent) then
+		return self.m_Parent:GetRelativeX() + self.m_iX
 	else
-		return self:GetX()
+		return self.m_iX
 	end
 end
 
 function ELEMENT:GetRelativeY()
-	local Parent = self:GetParent()
-
-	if IsValid(Parent) then
-		return Parent:GetRelativeY() + self:GetY()
+	if IsValid(self.m_Parent) then
+		return self.m_Parent:GetRelativeY() + self.m_iY
 	else
-		return self:GetY()
+		return self.m_iY
 	end
 end
 
@@ -175,14 +171,14 @@ function ELEMENT:SetVisible(Visible)
 end
 
 function ELEMENT:SetParent(Parent)
-	if IsValid(self:GetParent()) then
-		self:GetParent():UnRegisterChild(self)
+	if IsValid(self.m_Parent) then
+		self.m_Parent:UnRegisterChild(self)
 	end
 
 	self.m_Parent = Parent or nil
 
-	if IsValid(self:GetParent()) then
-		self:GetParent():RegisterChild(self)
+	if IsValid(self.m_Parent) then
+		self.m_Parent:RegisterChild(self)
 	end
 end
 
