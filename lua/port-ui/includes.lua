@@ -6,3 +6,4 @@ portui.IncludeRelative("elements/renderer.lua")
 
 portui.IncludeRelative("elements/list/base.lua")
 portui.IncludeRelative("elements/list/window.lua")
+portui.IncludeRelative("elements/list/label.lua")
