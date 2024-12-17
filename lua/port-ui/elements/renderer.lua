@@ -11,6 +11,7 @@ local xpcall = xpcall
 local render_SetViewPort = render.SetViewPort
 local render_GetViewPort = render.GetViewPort
 local render_SetScissorRect = render.SetScissorRect
+local render_GetScissorRect = render.GetScissorRect
 local math_Clamp = math.Clamp
 local math_min = math.min
 local input_IsKeyTrapping = input.IsKeyTrapping
@@ -29,18 +30,35 @@ Renderer.LastViewPortY = 0
 Renderer.LastViewPortWidth = ScrW()
 Renderer.LastViewPortHeight = ScrH()
 
+Renderer.LastScissorX = 0
+Renderer.LastScissorY = 0
+Renderer.LastScissorZ = ScrW()
+Renderer.LastScissorW = ScrH()
+Renderer.LastScissorState = false
+
 Renderer.MouseX = 0
 Renderer.MouseY = 0
 
 Renderer.HoveredElement = nil
 
-function Renderer.KillViewPort()
+function Renderer.SwapPortRect()
 	Renderer.LastViewPortX, Renderer.LastViewPortY, Renderer.LastViewPortWidth, Renderer.LastViewPortHeight = render_GetViewPort()
 	render_SetViewPort(0, 0, Renderer.ScreenWidth, Renderer.ScreenHeight)
+
+	Renderer.LastScissorX, Renderer.LastScissorY, Renderer.LastScissorZ, Renderer.LastScissorW, Renderer.LastScissorState = render_GetScissorRect()
+
+	local ScissorZ = Renderer.LastViewPortX + Renderer.LastViewPortWidth
+	ScissorZ = math_Clamp(ScissorZ, Renderer.LastViewPortX, Renderer.TopViewPortX + Renderer.TopViewPortWidth)
+
+	local ScissorW = Renderer.LastViewPortY + Renderer.LastViewPortHeight
+	ScissorW = math_Clamp(ScissorW, Renderer.LastViewPortY, Renderer.TopViewPortY + Renderer.TopViewPortHeight)
+
+	render_SetScissorRect(Renderer.LastViewPortX, Renderer.LastViewPortY, ScissorZ, ScissorW, true)
 end
 
-function Renderer.RestoreViewPort()
+function Renderer.UnSwapPortRect()
 	render_SetViewPort(Renderer.LastViewPortX, Renderer.LastViewPortY, Renderer.LastViewPortWidth, Renderer.LastViewPortHeight)
+	render_SetScissorRect(Renderer.LastScissorX, Renderer.LastScissorY, Renderer.LastScissorZ, Renderer.LastScissorW, Renderer.LastScissorState)
 end
 
 function Renderer.MouseInBounds(X1, Y1, X2, Y2)

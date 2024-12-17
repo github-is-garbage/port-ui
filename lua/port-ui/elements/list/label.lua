@@ -16,7 +16,7 @@ function ELEMENT:PaintBackground(Width, Height)
 end
 
 function ELEMENT:PaintForeground(Width, Height)
-	Renderer.KillViewPort() -- Absolutely rapes text rendering, can't fix that
+	Renderer.SwapPortRect() -- Absolutely rapes text rendering, can't fix that
 	do
 		local X, Y = self:GetRelativePos()
 
@@ -25,7 +25,7 @@ function ELEMENT:PaintForeground(Width, Height)
 		surface.SetTextPos(X, Y)
 		surface.DrawText(self:GetText())
 	end
-	Renderer.RestoreViewPort()
+	Renderer.UnSwapPortRect()
 end
 
 portui.Elements.Register("Label", ELEMENT, "Base")

@@ -59,7 +59,7 @@ function ELEMENT:PaintForeground(Width, Height)
 	surface.DrawLine(0, Height, 0, 0)
 
 	-- Title
-	Renderer.KillViewPort() -- Absolutely rapes text rendering, can't fix that
+	Renderer.SwapPortRect() -- Absolutely rapes text rendering, can't fix that
 	do
 		local X, Y = self:GetRelativePos()
 
@@ -68,7 +68,7 @@ function ELEMENT:PaintForeground(Width, Height)
 		surface.SetTextPos(X + 3, Y)
 		surface.DrawText(self:GetTitle())
 	end
-	Renderer.RestoreViewPort()
+	Renderer.UnSwapPortRect()
 end
 
 function ELEMENT:OnLeftClick(MouseX, MouseY)

@@ -1,4 +1,5 @@
 portui.IncludeRelative("detours/viewport.lua")
+portui.IncludeRelative("detours/scissorrect.lua")
 
 portui.IncludeRelative("elements/elements.lua")
 portui.IncludeRelative("elements/input.lua")
