@@ -2,6 +2,15 @@ portui.Elements.Renderer = portui.Elements.Renderer or {}
 local Renderer = portui.Elements.Renderer
 local Input = portui.Elements.Input
 
+local IsValid = IsValid
+local render_SetViewPort = render.SetViewPort
+local render_GetViewPort = render.GetViewPort
+local render_SetScissorRect = render.SetScissorRect
+local math_Clamp = math.Clamp
+local math_min = math.min
+local input_IsKeyTrapping = input.IsKeyTrapping
+local dragndrop_IsDragging = dragndrop.IsDragging
+
 Renderer.ScreenWidth = ScrW()
 Renderer.ScreenHeight = ScrH()
 
@@ -21,12 +30,12 @@ Renderer.MouseY = 0
 Renderer.HoveredElement = nil
 
 function Renderer.KillViewPort()
-	Renderer.LastViewPortX, Renderer.LastViewPortY, Renderer.LastViewPortWidth, Renderer.LastViewPortHeight = render.GetViewPort()
-	render.SetViewPort(0, 0, Renderer.ScreenWidth, Renderer.ScreenHeight)
+	Renderer.LastViewPortX, Renderer.LastViewPortY, Renderer.LastViewPortWidth, Renderer.LastViewPortHeight = render_GetViewPort()
+	render_SetViewPort(0, 0, Renderer.ScreenWidth, Renderer.ScreenHeight)
 end
 
 function Renderer.RestoreViewPort()
-	render.SetViewPort(Renderer.LastViewPortX, Renderer.LastViewPortY, Renderer.LastViewPortWidth, Renderer.LastViewPortHeight)
+	render_SetViewPort(Renderer.LastViewPortX, Renderer.LastViewPortY, Renderer.LastViewPortWidth, Renderer.LastViewPortHeight)
 end
 
 function Renderer.MouseInBounds(X1, Y1, X2, Y2)
@@ -54,13 +63,13 @@ function Renderer.RenderElement(Element, IsChild)
 	local ScissorZ, ScissorW = ViewPortX + ViewPortWidth, ViewPortY + ViewPortHeight
 
 	if IsChild then
-		local LastViewPortX, LastViewPortY, LastViewPortWidth, LastViewPortHeight = render.GetViewPort()
+		local LastViewPortX, LastViewPortY, LastViewPortWidth, LastViewPortHeight = render_GetViewPort()
 
-		ScissorX = math.Clamp(ScissorX, Renderer.TopViewPortX, Renderer.TopViewPortWidth)
-		ScissorY = math.Clamp(ScissorY, Renderer.TopViewPortY, Renderer.TopViewPortHeight)
+		ScissorX = math_Clamp(ScissorX, Renderer.TopViewPortX, Renderer.TopViewPortWidth)
+		ScissorY = math_Clamp(ScissorY, Renderer.TopViewPortY, Renderer.TopViewPortHeight)
 
-		ScissorZ = math.min(Renderer.TopViewPortX + Renderer.TopViewPortWidth, LastViewPortX + LastViewPortWidth)
-		ScissorW = math.min(Renderer.TopViewPortY + Renderer.TopViewPortHeight, LastViewPortY + LastViewPortHeight)
+		ScissorZ = math_min(Renderer.TopViewPortX + Renderer.TopViewPortWidth, LastViewPortX + LastViewPortWidth)
+		ScissorW = math_min(Renderer.TopViewPortY + Renderer.TopViewPortHeight, LastViewPortY + LastViewPortHeight)
 	else
 		Renderer.TopViewPortX = ViewPortX
 		Renderer.TopViewPortY = ViewPortY
@@ -68,14 +77,14 @@ function Renderer.RenderElement(Element, IsChild)
 		Renderer.TopViewPortHeight = ViewPortHeight
 	end
 
-	render.SetViewPort(ViewPortX, ViewPortY, ViewPortWidth, ViewPortHeight)
+	render_SetViewPort(ViewPortX, ViewPortY, ViewPortWidth, ViewPortHeight)
 	do
 		Element:Think()
 
 		Element:PaintBackground(ScreenWidth, ScreenHeight)
 		Element:PaintForeground(ScreenWidth, ScreenHeight)
 
-		render.SetScissorRect(ScissorX, ScissorY, ScissorZ, ScissorW, true)
+		render_SetScissorRect(ScissorX, ScissorY, ScissorZ, ScissorW, true)
 		do
 			local Children = Element:GetChildren()
 
@@ -83,9 +92,9 @@ function Renderer.RenderElement(Element, IsChild)
 				Renderer.RenderElement(Children[ChildIndex], true)
 			end
 		end
-		render.SetScissorRect(0, 0, 0, 0, false)
+		render_SetScissorRect(0, 0, 0, 0, false)
 	end
-	render.SetViewPort(0, 0, ScreenWidth, ScreenHeight)
+	render_SetViewPort(0, 0, ScreenWidth, ScreenHeight)
 
 	Element:PostRenderChildren(ElementX, ElementY, ElementWidth, ElementHeight)
 end
@@ -111,7 +120,7 @@ function Renderer.RenderElements()
 	end
 
 	-- Inputs
-	if not Input.GetInputElement() and not input.IsKeyTrapping() and not dragndrop.IsDragging() then
+	if not Input.GetInputElement() and not input_IsKeyTrapping() and not dragndrop_IsDragging() then
 		local HoveredElement = Renderer.HoveredElement
 
 		if IsValid(HoveredElement) then
