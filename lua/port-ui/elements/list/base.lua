@@ -45,15 +45,15 @@ function ELEMENT:PostRenderChildren(X, Y, Width, Height) -- Render relative to s
 	-- For override
 end
 
-function ELEMENT:OnLeftClick()
+function ELEMENT:OnLeftClick(MouseX, MouseY) -- MouseX and MouseY in element space
 	-- For override
 end
 
-function ELEMENT:OnRightClick()
+function ELEMENT:OnRightClick(MouseX, MouseY) -- MouseX and MouseY in element space
 	-- For override
 end
 
-function ELEMENT:OnMiddleClick()
+function ELEMENT:OnMiddleClick(MouseX, MouseY) -- MouseX and MouseY in element space
 	-- For override
 end
 

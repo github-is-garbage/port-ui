@@ -98,17 +98,21 @@ function Renderer.RenderElements()
 
 	-- Inputs
 	if not Input.GetInputElement() and not input.IsKeyTrapping() and not dragndrop.IsDragging() then
-		if IsValid(Renderer.HoveredElement) then
+		local HoveredElement = Renderer.HoveredElement
+
+		if IsValid(HoveredElement) then
+			local ElementX, ElementY = HoveredElement:GetRelativePos()
+
 			if Input.WasButtonJustPressed(MOUSE_LEFT) then
-				Renderer.HoveredElement:OnLeftClick()
+				HoveredElement:OnLeftClick(Renderer.MouseX - ElementX, Renderer.MouseY - ElementY)
 			end
 
 			if Input.WasButtonJustPressed(MOUSE_RIGHT) then
-				Renderer.HoveredElement:OnRightClick()
+				HoveredElement:OnRightClick(Renderer.MouseX - ElementX, Renderer.MouseY - ElementY)
 			end
 
 			if Input.WasButtonJustPressed(MOUSE_MIDDLE) then
-				Renderer.HoveredElement:OnMiddleClick()
+				HoveredElement:OnMiddleClick(Renderer.MouseX - ElementX, Renderer.MouseY - ElementY)
 			end
 		end
 	end
