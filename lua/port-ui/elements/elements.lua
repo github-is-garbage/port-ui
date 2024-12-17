@@ -18,6 +18,10 @@ function Elements.Register(Name, Meta, BaseName)
 		ErrorNoHaltWithStack("Overriding portui element ", Name)
 	end
 
+	if not Meta.__index then
+		Meta.__index = Meta
+	end
+
 	if isstring(BaseName) then
 		local BaseMeta = Elements.Metas[BaseName]
 
@@ -26,10 +30,6 @@ function Elements.Register(Name, Meta, BaseName)
 		else
 			return error("Tried to register ", Name, " to non-existent base ", BaseName)
 		end
-	end
-
-	if not Meta.__index then
-		Meta.__index = Meta
 	end
 
 	Elements.Metas[Name] = Meta
