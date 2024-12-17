@@ -95,15 +95,15 @@ function Renderer.RenderElements()
 
 	-- Inputs
 	if IsValid(Renderer.HoveredElement) then
-		if portui.Input.WasButtonJustPressed(MOUSE_LEFT) then
+		if portui.Elements.Input.WasButtonJustPressed(MOUSE_LEFT) then
 			Renderer.HoveredElement:OnLeftClick()
 		end
 
-		if portui.Input.WasButtonJustPressed(MOUSE_RIGHT) then
+		if portui.Elements.Input.WasButtonJustPressed(MOUSE_RIGHT) then
 			Renderer.HoveredElement:OnRightClick()
 		end
 
-		if portui.Input.WasButtonJustPressed(MOUSE_MIDDLE) then
+		if portui.Elements.Input.WasButtonJustPressed(MOUSE_MIDDLE) then
 			Renderer.HoveredElement:OnMiddleClick()
 		end
 	end

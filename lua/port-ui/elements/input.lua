@@ -1,5 +1,5 @@
-portui.Input = portui.Input or {}
-local Input = portui.Input
+portui.Elements.Input = portui.Elements.Input or {}
+local Input = portui.Elements.Input
 
 local BUTTON_CODE_NONE = BUTTON_CODE_NONE
 local BUTTON_CODE_COUNT = BUTTON_CODE_COUNT
