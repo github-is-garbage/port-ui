@@ -94,17 +94,19 @@ function Renderer.RenderElements()
 	end
 
 	-- Inputs
-	if IsValid(Renderer.HoveredElement) then
-		if portui.Elements.Input.WasButtonJustPressed(MOUSE_LEFT) then
-			Renderer.HoveredElement:OnLeftClick()
-		end
+	if not input.IsKeyTrapping() and not dragndrop.IsDragging() then
+		if IsValid(Renderer.HoveredElement) then
+			if portui.Elements.Input.WasButtonJustPressed(MOUSE_LEFT) then
+				Renderer.HoveredElement:OnLeftClick()
+			end
 
-		if portui.Elements.Input.WasButtonJustPressed(MOUSE_RIGHT) then
-			Renderer.HoveredElement:OnRightClick()
-		end
+			if portui.Elements.Input.WasButtonJustPressed(MOUSE_RIGHT) then
+				Renderer.HoveredElement:OnRightClick()
+			end
 
-		if portui.Elements.Input.WasButtonJustPressed(MOUSE_MIDDLE) then
-			Renderer.HoveredElement:OnMiddleClick()
+			if portui.Elements.Input.WasButtonJustPressed(MOUSE_MIDDLE) then
+				Renderer.HoveredElement:OnMiddleClick()
+			end
 		end
 	end
 end
