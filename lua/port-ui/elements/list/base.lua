@@ -1,3 +1,5 @@
+local Renderer = portui.Elements.Renderer
+
 local ELEMENT = {}
 
 function ELEMENT:IsValid()
@@ -71,11 +73,11 @@ end
 --]]
 
 function ELEMENT:CalculatePixelsWidth(Pixels) -- The viewport fucks with aspect ratio, make sure our pixels are actual pixels
-	return math.Remap(Pixels, 0, self:GetWidth(), 0, portui.Elements.Renderer.ScreenWidth)
+	return math.Remap(Pixels, 0, self:GetWidth(), 0, Renderer.ScreenWidth)
 end
 
 function ELEMENT:CalculatePixelsHeight(Pixels)
-	return math.Remap(Pixels, 0, self:GetHeight(), 0, portui.Elements.Renderer.ScreenHeight)
+	return math.Remap(Pixels, 0, self:GetHeight(), 0, Renderer.ScreenHeight)
 end
 
 function ELEMENT:GetX()
