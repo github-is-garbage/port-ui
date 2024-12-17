@@ -10,10 +10,24 @@ Renderer.TopViewPortY = 0
 Renderer.TopViewPortWidth = ScrW()
 Renderer.TopViewPortHeight = ScrH()
 
+Renderer.LastViewPortX = 0
+Renderer.LastViewPortY = 0
+Renderer.LastViewPortWidth = ScrW()
+Renderer.LastViewPortHeight = ScrH()
+
 Renderer.MouseX = 0
 Renderer.MouseY = 0
 
 Renderer.HoveredElement = nil
+
+function Renderer.KillViewPort()
+	Renderer.LastViewPortX, Renderer.LastViewPortY, Renderer.LastViewPortWidth, Renderer.LastViewPortHeight = render.GetViewPort()
+	render.SetViewPort(0, 0, Renderer.ScreenWidth, Renderer.ScreenHeight)
+end
+
+function Renderer.RestoreViewPort()
+	render.SetViewPort(Renderer.LastViewPortX, Renderer.LastViewPortY, Renderer.LastViewPortWidth, Renderer.LastViewPortHeight)
+end
 
 function Renderer.MouseInBounds(X1, Y1, X2, Y2)
 	return Renderer.MouseX >= X1 and Renderer.MouseY >= Y1 and Renderer.MouseX <= X2 and Renderer.MouseY <= Y2
