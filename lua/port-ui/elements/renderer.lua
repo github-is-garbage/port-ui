@@ -41,7 +41,7 @@ Renderer.MouseY = 0
 
 Renderer.HoveredElement = nil
 
-function Renderer.SwapPortRect()
+function Renderer.SwapPortRect() -- Flips the view port and scissor rect for proper clipped text rendering inside child elements
 	Renderer.LastViewPortX, Renderer.LastViewPortY, Renderer.LastViewPortWidth, Renderer.LastViewPortHeight = render_GetViewPort()
 	render_SetViewPort(0, 0, Renderer.ScreenWidth, Renderer.ScreenHeight)
 
