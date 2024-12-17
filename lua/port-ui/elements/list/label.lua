@@ -8,7 +8,9 @@ function ELEMENT:SetText(Text)
 	self.m_strText = tostring(Text)
 
 	surface.SetFont(self:GetFontName())
-	self:SetSize(surface.GetTextSize(self.m_strText))
+	local TextWidth, TextHeight = surface.GetTextSize(self.m_strText)
+
+	self:SetSize(TextWidth + 2, TextHeight + 2) -- Pixel edges that don't get counted for some reason
 end
 
 function ELEMENT:PaintBackground(Width, Height)
@@ -16,13 +18,13 @@ function ELEMENT:PaintBackground(Width, Height)
 end
 
 function ELEMENT:PaintForeground(Width, Height)
-	Renderer.SwapPortRect() -- Absolutely rapes text rendering, can't fix that
+	Renderer.SwapPortRect()
 	do
 		local X, Y = self:GetRelativePos()
 
 		surface.SetFont(self:GetFontName())
 		surface.SetTextColor(255, 255, 255, 255)
-		surface.SetTextPos(X, Y)
+		surface.SetTextPos(X + 1, Y + 1)
 		surface.DrawText(self:GetText())
 	end
 	Renderer.UnSwapPortRect()
