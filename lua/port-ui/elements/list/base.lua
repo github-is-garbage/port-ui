@@ -55,6 +55,18 @@ function ELEMENT:UnRegisterChild(Child)
 	end
 end
 
+function ELEMENT:OnLeftClick()
+	-- For override
+end
+
+function ELEMENT:OnRightClick()
+	-- For override
+end
+
+function ELEMENT:OnMiddleClick()
+	-- For override
+end
+
 --[[
 	Getters
 --]]
