@@ -113,6 +113,10 @@ function Renderer.RenderElement(Element, IsChild)
 
 			for ChildIndex = 1, #Children do
 				Renderer.RenderElement(Children[ChildIndex], true)
+
+				-- Restore after rendering a child
+				render_SetScissorRect(ScissorX, ScissorY, ScissorZ, ScissorW, true)
+				render_SetViewPort(ViewPortX, ViewPortY, ViewPortWidth, ViewPortHeight)
 			end
 		end
 		render_SetScissorRect(0, 0, 0, 0, false)
