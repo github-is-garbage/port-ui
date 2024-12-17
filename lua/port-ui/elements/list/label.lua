@@ -4,10 +4,6 @@ local ELEMENT = {}
 
 AccessorFunc(ELEMENT, "m_strText", "Text", FORCE_STRING)
 
-function ELEMENT:Init()
-	self.m_DragData = {}
-end
-
 function ELEMENT:SetText(Text)
 	self.m_strText = tostring(Text)
 
