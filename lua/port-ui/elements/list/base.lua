@@ -71,6 +71,14 @@ end
 	Getters
 --]]
 
+function ELEMENT:CalculatePixelsWidth(Pixels) -- The viewport fucks with aspect ratio, make sure our pixels are actual pixels
+	return math.Remap(Pixels, 0, self:GetWidth(), 0, portui.Elements.Renderer.ScreenWidth)
+end
+
+function ELEMENT:CalculatePixelsHeight(Pixels)
+	return math.Remap(Pixels, 0, self:GetHeight(), 0, portui.Elements.Renderer.ScreenHeight)
+end
+
 function ELEMENT:GetX()
 	return self.m_iX
 end
