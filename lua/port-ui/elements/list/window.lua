@@ -20,8 +20,14 @@ function ELEMENT:Think()
 		return
 	end
 
-	self:SetX(gui.MouseX() - self.m_DragData.MouseX)
-	self:SetY(gui.MouseY() - self.m_DragData.MouseY)
+	local NewX = gui.MouseX() - self.m_DragData.MouseX
+	local NewY = gui.MouseY() - self.m_DragData.MouseY
+
+	NewX = math.Clamp(NewX, 0, Renderer.ScreenWidth)
+	NewY = math.Clamp(NewY, 0, Renderer.ScreenHeight)
+
+	self:SetX(NewX)
+	self:SetY(NewY)
 end
 
 function ELEMENT:PaintBackground(Width, Height)
