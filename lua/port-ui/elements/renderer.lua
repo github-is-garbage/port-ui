@@ -2,6 +2,10 @@ portui.Elements.Renderer = portui.Elements.Renderer or {}
 local Renderer = portui.Elements.Renderer
 local Input = portui.Elements.Input
 
+local ScrW = ScrW
+local ScrH = ScrH
+local gui_MouseX = gui.MouseX
+local gui_MouseY = gui.MouseY
 local IsValid = IsValid
 local xpcall = xpcall
 local render_SetViewPort = render.SetViewPort
@@ -103,8 +107,8 @@ end
 function Renderer.RenderElements()
 	Renderer.ScreenWidth = ScrW()
 	Renderer.ScreenHeight = ScrH()
-	Renderer.MouseX = gui.MouseX()
-	Renderer.MouseY = gui.MouseY()
+	Renderer.MouseX = gui_MouseX()
+	Renderer.MouseY = gui_MouseY()
 	Renderer.HoveredElement = nil
 
 	-- Rendering
