@@ -2,6 +2,8 @@ local Renderer = portui.Elements.Renderer
 
 local ELEMENT = {}
 
+AccessorFunc(ELEMENT, "m_strFontName", "FontName", FORCE_STRING)
+
 function ELEMENT:IsValid()
 	return self.m_bValid
 end
@@ -18,6 +20,7 @@ function ELEMENT:InternalInit()
 
 	self.m_bVisible = true
 	self.m_bValid = true
+	self:SetFontName("BudgetLabel")
 
 	self.m_Parent = nil
 	self.m_Children = {}

@@ -11,7 +11,7 @@ end
 function ELEMENT:SetText(Text)
 	self.m_strText = tostring(Text)
 
-	surface.SetFont("BudgetLabel")
+	surface.SetFont(self:GetFontName())
 	self:SetSize(surface.GetTextSize(self.m_strText))
 end
 
@@ -24,7 +24,7 @@ function ELEMENT:PaintForeground(Width, Height)
 	do
 		local X, Y = self:GetRelativePos()
 
-		surface.SetFont("BudgetLabel")
+		surface.SetFont(self:GetFontName())
 		surface.SetTextColor(255, 255, 255, 255)
 		surface.SetTextPos(X, Y)
 		surface.DrawText(self:GetText())

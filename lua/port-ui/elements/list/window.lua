@@ -63,7 +63,7 @@ function ELEMENT:PaintForeground(Width, Height)
 	do
 		local X, Y = self:GetRelativePos()
 
-		surface.SetFont("BudgetLabel")
+		surface.SetFont(self:GetFontName())
 		surface.SetTextColor(255, 255, 255, 255)
 		surface.SetTextPos(X + 3, Y)
 		surface.DrawText(self:GetTitle())
