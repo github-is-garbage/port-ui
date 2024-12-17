@@ -37,8 +37,17 @@ end
 
 function ELEMENT:PaintForeground(Width, Height) -- Render relative to element space, clipped
 	-- For override
+	local WidthOffset = self:CalculatePixelsWidth(1)
+	local HeightOffset = self:CalculatePixelsHeight(1)
+
+	Width = Width - WidthOffset
+	Height = Height - HeightOffset
+
 	surface.SetDrawColor(0, 0, 0, 255)
-	surface.DrawOutlinedRect(0, 0, Width, Height)
+	surface.DrawLine(0, 0, Width, 0) -- DrawOutlinedRect has its right and bottom edges cut off inside viewports for some reason
+	surface.DrawLine(Width, 0, Width, Height)
+	surface.DrawLine(Width, Height, 0, Height)
+	surface.DrawLine(0, Height, 0, 0)
 end
 
 function ELEMENT:PostRenderChildren(X, Y, Width, Height) -- Render relative to screen space, unclipped
