@@ -34,25 +34,25 @@ function ELEMENT:Think() -- Called BEFORE painting
 	-- For override
 end
 
-function ELEMENT:PaintBackground(Width, Height) -- Render relative to element space, clipped
+function ELEMENT:PaintBackground(RenderWidth, RenderHeight, Width, Height) -- Render relative to element space, clipped
 	-- For override
 	surface.SetDrawColor(255, 255, 255, 150)
-	surface.DrawRect(0, 0, Width, Height)
+	surface.DrawRect(0, 0, RenderWidth, RenderHeight)
 end
 
-function ELEMENT:PaintForeground(Width, Height) -- Render relative to element space, clipped
+function ELEMENT:PaintForeground(RenderWidth, RenderHeight, Width, Height) -- Render relative to element space, clipped
 	-- For override
 	local WidthOffset = self:CalculatePixelsWidth(1)
 	local HeightOffset = self:CalculatePixelsHeight(1)
 
-	Width = Width - WidthOffset
-	Height = Height - HeightOffset
+	RenderWidth = RenderWidth - WidthOffset
+	RenderHeight = RenderHeight - HeightOffset
 
 	surface.SetDrawColor(0, 0, 0, 255)
-	surface.DrawLine(0, 0, Width, 0) -- DrawOutlinedRect has its right and bottom edges cut off inside viewports for some reason
-	surface.DrawLine(Width, 0, Width, Height)
-	surface.DrawLine(Width, Height, 0, Height)
-	surface.DrawLine(0, Height, 0, 0)
+	surface.DrawLine(0, 0, RenderWidth, 0) -- DrawOutlinedRect has its right and bottom edges cut off inside viewports for some reason
+	surface.DrawLine(RenderWidth, 0, RenderWidth, RenderHeight)
+	surface.DrawLine(RenderWidth, RenderHeight, 0, RenderHeight)
+	surface.DrawLine(0, RenderHeight, 0, 0)
 end
 
 function ELEMENT:PostRenderChildren(X, Y, Width, Height) -- Render relative to screen space, unclipped

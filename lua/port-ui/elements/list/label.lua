@@ -13,11 +13,9 @@ function ELEMENT:SetText(Text)
 	self:SetSize(TextWidth + 2, TextHeight + 2) -- Pixel edges that don't get counted for some reason
 end
 
-function ELEMENT:PaintBackground(Width, Height)
+function ELEMENT:PaintBackground() end
 
-end
-
-function ELEMENT:PaintForeground(Width, Height)
+function ELEMENT:PaintForeground()
 	Renderer.SwapPortRect()
 	do
 		local X, Y = self:GetRelativePos()

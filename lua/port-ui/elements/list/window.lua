@@ -32,31 +32,26 @@ function ELEMENT:Think()
 	self:SetY(NewY)
 end
 
-function ELEMENT:PaintBackground(Width, Height)
-	surface.SetDrawColor(255, 255, 255, 150)
-	surface.DrawRect(0, 0, Width, Height)
-end
-
-function ELEMENT:PaintForeground(Width, Height)
+function ELEMENT:PaintForeground(RenderWidth, RenderHeight)
 	local TitleBarHeight = self:CalculatePixelsHeight(12)
 
 	surface.SetDrawColor(100, 100, 100, 255)
-	surface.DrawRect(0, 0, Width, TitleBarHeight)
+	surface.DrawRect(0, 0, RenderWidth, TitleBarHeight)
 
 	surface.SetDrawColor(0, 0, 0, 255)
-	surface.DrawLine(0, TitleBarHeight, Width, TitleBarHeight)
+	surface.DrawLine(0, TitleBarHeight, RenderWidth, TitleBarHeight)
 
 	-- Normal border
 	local WidthOffset = self:CalculatePixelsWidth(1)
 	local HeightOffset = self:CalculatePixelsHeight(1)
 
-	Width = Width - WidthOffset
-	Height = Height - HeightOffset
+	RenderWidth = RenderWidth - WidthOffset
+	RenderHeight = RenderHeight - HeightOffset
 
-	surface.DrawLine(0, 0, Width, 0)
-	surface.DrawLine(Width, 0, Width, Height)
-	surface.DrawLine(Width, Height, 0, Height)
-	surface.DrawLine(0, Height, 0, 0)
+	surface.DrawLine(0, 0, RenderWidth, 0)
+	surface.DrawLine(RenderWidth, 0, RenderWidth, RenderHeight)
+	surface.DrawLine(RenderWidth, RenderHeight, 0, RenderHeight)
+	surface.DrawLine(0, RenderHeight, 0, 0)
 
 	-- Title
 	Renderer.SwapPortRect() -- Absolutely rapes text rendering, can't fix that

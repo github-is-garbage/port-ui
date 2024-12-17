@@ -76,6 +76,7 @@ function Renderer.RenderElement(Element, IsChild)
 	local ElementWidth, ElementHeight = Element:GetSize()
 
 	if Renderer.MouseInBounds(ElementX, ElementY, ElementX + ElementWidth, ElementY + ElementWidth) then
+		-- This is a bit of a bad way to get the hovered element because it means there can't be an :IsHovered function
 		Renderer.HoveredElement = Element
 	end
 
@@ -86,6 +87,7 @@ function Renderer.RenderElement(Element, IsChild)
 	local ScissorZ, ScissorW = ViewPortX + ViewPortWidth, ViewPortY + ViewPortHeight
 
 	if IsChild then
+		-- Clip everything to the topmost element's bounds
 		local LastViewPortX, LastViewPortY, LastViewPortWidth, LastViewPortHeight = render_GetViewPort()
 
 		ScissorX = math_Clamp(ScissorX, Renderer.TopViewPortX, Renderer.TopViewPortWidth)
@@ -104,8 +106,8 @@ function Renderer.RenderElement(Element, IsChild)
 	do
 		xpcall(Element.Think, ErrorNoHaltWithStack, Element)
 
-		xpcall(Element.PaintBackground, ErrorNoHaltWithStack, Element, ScreenWidth, ScreenHeight)
-		xpcall(Element.PaintForeground, ErrorNoHaltWithStack, Element, ScreenWidth, ScreenHeight)
+		xpcall(Element.PaintBackground, ErrorNoHaltWithStack, Element, ScreenWidth, ScreenHeight, ElementWidth, ElementHeight)
+		xpcall(Element.PaintForeground, ErrorNoHaltWithStack, Element, ScreenWidth, ScreenHeight, ElementWidth, ElementHeight)
 
 		render_SetScissorRect(ScissorX, ScissorY, ScissorZ, ScissorW, true)
 		do

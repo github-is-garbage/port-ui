@@ -4,25 +4,24 @@ local ELEMENT = {}
 
 AccessorFunc(ELEMENT, "m_strText", "Text", FORCE_STRING)
 
-function ELEMENT:PaintBackground(Width, Height)
+function ELEMENT:PaintBackground(RenderWidth, RenderHeight)
 	local WidthOffset = self:CalculatePixelsWidth(1)
 	local HeightOffset = self:CalculatePixelsHeight(1)
 
-	Width = Width - WidthOffset
-	Height = Height - HeightOffset
+	RenderWidth = RenderWidth - WidthOffset
+	RenderHeight = RenderHeight - HeightOffset
 
 	surface.SetDrawColor(0, 0, 0, 255)
-	surface.DrawLine(0, 0, Width, 0)
-	surface.DrawLine(Width, 0, Width, Height)
-	surface.DrawLine(Width, Height, 0, Height)
-	surface.DrawLine(0, Height, 0, 0)
+	surface.DrawLine(0, 0, RenderWidth, 0) -- DrawOutlinedRect has its right and bottom edges cut off inside viewports for some reason
+	surface.DrawLine(RenderWidth, 0, RenderWidth, RenderHeight)
+	surface.DrawLine(RenderWidth, RenderHeight, 0, RenderHeight)
+	surface.DrawLine(0, RenderHeight, 0, 0)
 end
 
-function ELEMENT:PaintForeground(Width, Height)
+function ELEMENT:PaintForeground(RenderWidth, RenderHeight, Width, Height)
 	Renderer.SwapPortRect()
 	do
 		local X, Y = self:GetRelativePos()
-		Width, Height = self:GetSize()
 
 		surface.SetFont(self:GetFontName())
 		surface.SetTextColor(255, 255, 255, 255)
