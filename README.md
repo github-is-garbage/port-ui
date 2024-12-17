@@ -24,8 +24,8 @@ Result:
 ![port-ui Window](./gitimg/window.png)
 
 ## Known Issues / Jank
-- Due to this being made with View Ports, Elements rendered with a screen X or Y position off the screen bounds \
+- Due to this being made with View Ports, Elements rendered with a screen X or Y position off the screen bounds
 will be clipped due to DirectX clipping, I'm unable to remedy this with DisableClipping so it'll just have to do for now
 
-- Text rendering is weird inside Elements because of the View Ports due to how the View Ports mess with aspect ratio. \
+- Text rendering is weird inside Elements because of the View Ports due to how the View Ports mess with aspect ratio.
 This has been remedied by the implementation of the `portui.Elements.Renderer.SwapPortRect()` and `portui.Elements.Renderer.UnSwapPortRect()` functions
