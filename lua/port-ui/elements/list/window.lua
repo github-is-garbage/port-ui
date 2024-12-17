@@ -1,7 +1,13 @@
+local Renderer = portui.Elements.Renderer
+
 local ELEMENT = {}
+
+AccessorFunc(ELEMENT, "m_strTitle", "Title", FORCE_STRING)
 
 function ELEMENT:Init()
 	self.m_DragData = {}
+
+	self:SetTitle("Window")
 end
 
 function ELEMENT:Think()
@@ -43,6 +49,18 @@ function ELEMENT:PaintForeground(Width, Height)
 	surface.DrawLine(Width, 0, Width, Height)
 	surface.DrawLine(Width, Height, 0, Height)
 	surface.DrawLine(0, Height, 0, 0)
+
+	-- Title
+	Renderer.KillViewPort() -- Absolutely rapes text rendering, cant fix that
+	do
+		local X, Y = self:GetRelativePos()
+
+		surface.SetFont("BudgetLabel")
+		surface.SetTextColor(255, 255, 255, 255)
+		surface.SetTextPos(X + 3, Y)
+		surface.DrawText(self:GetTitle())
+	end
+	Renderer.RestoreViewPort()
 end
 
 function ELEMENT:OnLeftClick(MouseX, MouseY)
