@@ -55,6 +55,8 @@ function Renderer.RenderElement(Element, IsChild)
 
 	render.SetViewPort(ViewPortX, ViewPortY, ViewPortWidth, ViewPortHeight)
 	do
+		Element:Think()
+
 		Element:PaintBackground(ScreenWidth, ScreenHeight)
 		Element:PaintForeground(ScreenWidth, ScreenHeight)
 

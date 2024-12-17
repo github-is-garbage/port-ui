@@ -25,6 +25,10 @@ function ELEMENT:Init()
 	-- For override
 end
 
+function ELEMENT:Think() -- Called BEFORE painting
+	-- For override
+end
+
 function ELEMENT:PaintBackground(Width, Height) -- Render relative to element space, clipped
 	-- For override
 	surface.SetDrawColor(255, 255, 255, 150)
