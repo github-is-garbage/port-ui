@@ -22,3 +22,7 @@ ExamplePanel:SetSize(100, 100)
 Result:
 
 ![port-ui Window](./gitimg/window.png)
+
+## Known Issues
+- Due to this being made with View Ports, elements rendered with a screen X or Y position off the screen bounds \
+will be clipped due to DirectX clipping, I'm unable to remedy this with DisableClipping so it'll just have to do for now
