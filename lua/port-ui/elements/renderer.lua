@@ -3,6 +3,7 @@ local Renderer = portui.Elements.Renderer
 local Input = portui.Elements.Input
 
 local IsValid = IsValid
+local xpcall = xpcall
 local render_SetViewPort = render.SetViewPort
 local render_GetViewPort = render.GetViewPort
 local render_SetScissorRect = render.SetScissorRect
@@ -79,10 +80,10 @@ function Renderer.RenderElement(Element, IsChild)
 
 	render_SetViewPort(ViewPortX, ViewPortY, ViewPortWidth, ViewPortHeight)
 	do
-		Element:Think()
+		xpcall(Element.Think, ErrorNoHaltWithStack, Element)
 
-		Element:PaintBackground(ScreenWidth, ScreenHeight)
-		Element:PaintForeground(ScreenWidth, ScreenHeight)
+		xpcall(Element.PaintBackground, ErrorNoHaltWithStack, Element, ScreenWidth, ScreenHeight)
+		xpcall(Element.PaintForeground, ErrorNoHaltWithStack, Element, ScreenWidth, ScreenHeight)
 
 		render_SetScissorRect(ScissorX, ScissorY, ScissorZ, ScissorW, true)
 		do
