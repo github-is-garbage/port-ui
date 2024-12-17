@@ -51,7 +51,7 @@ function ELEMENT:PaintForeground(Width, Height)
 	surface.DrawLine(0, Height, 0, 0)
 
 	-- Title
-	Renderer.KillViewPort() -- Absolutely rapes text rendering, cant fix that
+	Renderer.KillViewPort() -- Absolutely rapes text rendering, can't fix that
 	do
 		local X, Y = self:GetRelativePos()
 
