@@ -142,10 +142,12 @@ end
 
 function ELEMENT:SetX(X)
 	self.m_iX = tonumber(X) or 0
+	self.m_iX = math.Clamp(self.m_iX, 0, Renderer.ScreenWidth) -- DirectX refuses to render viewports at x or y < 0
 end
 
 function ELEMENT:SetY(Y)
 	self.m_iY = tonumber(Y) or 0
+	self.m_iY = math.Clamp(self.m_iY, 0, Renderer.ScreenHeight)
 end
 
 function ELEMENT:SetPos(X, Y)
