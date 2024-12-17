@@ -3,11 +3,13 @@ local Renderer = portui.Elements.Renderer
 local ELEMENT = {}
 
 AccessorFunc(ELEMENT, "m_strTitle", "Title", FORCE_STRING)
+AccessorFunc(ELEMENT, "m_bDraggable", "Draggable", FORCE_BOOL)
 
 function ELEMENT:Init()
 	self.m_DragData = {}
 
 	self:SetTitle("Window")
+	self:SetDraggable(true)
 end
 
 function ELEMENT:Think()
@@ -70,6 +72,7 @@ function ELEMENT:PaintForeground(Width, Height)
 end
 
 function ELEMENT:OnLeftClick(MouseX, MouseY)
+	if not self:GetDraggable() then return end
 	if MouseY > 12 then return end
 
 	self.m_DragData.MouseX = MouseX
