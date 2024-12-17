@@ -1,12 +1,12 @@
 local ELEMENT = {}
 
---[[
-	Hooks
---]]
-
 function ELEMENT:IsValid()
 	return self.m_bValid
 end
+
+--[[
+	Hooks
+--]]
 
 function ELEMENT:InternalInit()
 	self.m_iX = 0
@@ -43,20 +43,6 @@ end
 
 function ELEMENT:PostRenderChildren(X, Y, Width, Height) -- Render relative to screen space, unclipped
 	-- For override
-end
-
-function ELEMENT:RegisterChild(Child)
-	if not table.HasValue(self.m_Children, Child) then
-		table.insert(self.m_Children, Child)
-	end
-end
-
-function ELEMENT:UnRegisterChild(Child)
-	local Index = table.KeyFromValue(self.m_Children, Child)
-
-	if Index then
-		table.remove(self.m_Children, Index)
-	end
 end
 
 function ELEMENT:OnLeftClick()
@@ -186,6 +172,24 @@ function ELEMENT:SetParent(Parent)
 
 	if IsValid(self:GetParent()) then
 		self:GetParent():RegisterChild(self)
+	end
+end
+
+--[[
+	Helpers
+--]]
+
+function ELEMENT:RegisterChild(Child)
+	if not table.HasValue(self.m_Children, Child) then
+		table.insert(self.m_Children, Child)
+	end
+end
+
+function ELEMENT:UnRegisterChild(Child)
+	local Index = table.KeyFromValue(self.m_Children, Child)
+
+	if Index then
+		table.remove(self.m_Children, Index)
 	end
 end
 
