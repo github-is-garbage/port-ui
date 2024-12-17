@@ -27,4 +27,16 @@ function Input.CollectButtons()
 	end
 end
 
+function Input.StartGrabbingInput(Element)
+	Input.m_InputFocus = Element
+end
+
+function Input.StopGrabbingInput()
+	Input.m_InputFocus = nil
+end
+
+function Input.GetInputElement()
+	return Input.m_InputFocus
+end
+
 hook.Add("DrawOverlay", "port-ui:CollectButtons", Input.CollectButtons)

@@ -1,5 +1,6 @@
 portui.Elements.Renderer = portui.Elements.Renderer or {}
 local Renderer = portui.Elements.Renderer
+local Input = portui.Elements.Input
 
 Renderer.ScreenWidth = ScrW()
 Renderer.ScreenHeight = ScrH()
@@ -96,17 +97,17 @@ function Renderer.RenderElements()
 	end
 
 	-- Inputs
-	if not input.IsKeyTrapping() and not dragndrop.IsDragging() then
+	if not Input.GetInputElement() and not input.IsKeyTrapping() and not dragndrop.IsDragging() then
 		if IsValid(Renderer.HoveredElement) then
-			if portui.Elements.Input.WasButtonJustPressed(MOUSE_LEFT) then
+			if Input.WasButtonJustPressed(MOUSE_LEFT) then
 				Renderer.HoveredElement:OnLeftClick()
 			end
 
-			if portui.Elements.Input.WasButtonJustPressed(MOUSE_RIGHT) then
+			if Input.WasButtonJustPressed(MOUSE_RIGHT) then
 				Renderer.HoveredElement:OnRightClick()
 			end
 
-			if portui.Elements.Input.WasButtonJustPressed(MOUSE_MIDDLE) then
+			if Input.WasButtonJustPressed(MOUSE_MIDDLE) then
 				Renderer.HoveredElement:OnMiddleClick()
 			end
 		end
