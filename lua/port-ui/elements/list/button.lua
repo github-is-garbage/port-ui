@@ -29,7 +29,10 @@ function ELEMENT:PaintForeground(RenderWidth, RenderHeight, Width, Height)
 		local Text = self:GetText()
 		local TextWidth, TextHeight = surface.GetTextSize(Text)
 
-		surface.SetTextPos(X + ((Width * 0.5) - (TextWidth * 0.5)), Y + ((Height * 0.5) - (TextHeight * 0.5))) -- Center the text
+		local TextX = (Width * 0.5) - (TextWidth * 0.5)
+		local TextY = (Height * 0.5) - (TextHeight * 0.5)
+
+		surface.SetTextPos(X + TextX, Y + TextY)
 		surface.DrawText(Text)
 	end
 	Renderer.UnSwapPortRect()
