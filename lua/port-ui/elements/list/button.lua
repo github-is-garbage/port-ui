@@ -12,7 +12,7 @@ function ELEMENT:PaintBackground(RenderWidth, RenderHeight)
 	RenderHeight = RenderHeight - HeightOffset
 
 	surface.SetDrawColor(0, 0, 0, 255)
-	surface.DrawLine(0, 0, RenderWidth, 0) -- DrawOutlinedRect has its right and bottom edges cut off inside viewports for some reason
+	surface.DrawLine(0, 0, RenderWidth, 0)
 	surface.DrawLine(RenderWidth, 0, RenderWidth, RenderHeight)
 	surface.DrawLine(RenderWidth, RenderHeight, 0, RenderHeight)
 	surface.DrawLine(0, RenderHeight, 0, 0)
