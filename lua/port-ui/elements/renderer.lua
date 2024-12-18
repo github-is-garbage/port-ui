@@ -128,14 +128,7 @@ function Renderer.RenderElement(Element, IsChild)
 	Element:PostRenderChildren(ElementX, ElementY, ElementWidth, ElementHeight)
 end
 
-function Renderer.RenderElements()
-	Renderer.ScreenWidth = ScrW()
-	Renderer.ScreenHeight = ScrH()
-	Renderer.MouseX = gui_MouseX()
-	Renderer.MouseY = gui_MouseY()
-	Renderer.HoveredElement = nil
-
-	-- Rendering
+function Renderer.RenderTopElements()
 	local Elements = portui.Elements.List
 
 	for Index = 1, #Elements do
@@ -147,27 +140,42 @@ function Renderer.RenderElements()
 
 		Renderer.RenderElement(Element)
 	end
+end
 
-	-- Inputs
-	if not Input.GetInputElement() and not input_IsKeyTrapping() and not dragndrop_IsDragging() then
-		local HoveredElement = Renderer.HoveredElement
+function Renderer.HandleInput()
+	local HoveredElement = Renderer.HoveredElement
+	if not IsValid(HoveredElement) then return end
 
-		if IsValid(HoveredElement) then
-			local ElementX, ElementY = HoveredElement:GetRelativePos()
+	if Input.GetInputElement() then return end
+	if input_IsKeyTrapping() then return end
+	if dragndrop_IsDragging() then return end
 
-			if Input.WasButtonJustPressed(MOUSE_LEFT) then
-				HoveredElement:OnLeftClick(Renderer.MouseX - ElementX, Renderer.MouseY - ElementY)
-			end
+	local ElementX, ElementY = HoveredElement:GetRelativePos()
+	local RelativeMouseX = Renderer.MouseX - ElementX
+	local RelativeMouseY = Renderer.MouseY - ElementY
 
-			if Input.WasButtonJustPressed(MOUSE_RIGHT) then
-				HoveredElement:OnRightClick(Renderer.MouseX - ElementX, Renderer.MouseY - ElementY)
-			end
-
-			if Input.WasButtonJustPressed(MOUSE_MIDDLE) then
-				HoveredElement:OnMiddleClick(Renderer.MouseX - ElementX, Renderer.MouseY - ElementY)
-			end
-		end
+	if Input.WasButtonJustPressed(MOUSE_LEFT) then
+		HoveredElement:OnLeftClick(RelativeMouseX, RelativeMouseY)
 	end
+
+	if Input.WasButtonJustPressed(MOUSE_RIGHT) then
+		HoveredElement:OnRightClick(RelativeMouseX, RelativeMouseY)
+	end
+
+	if Input.WasButtonJustPressed(MOUSE_MIDDLE) then
+		HoveredElement:OnMiddleClick(RelativeMouseX, RelativeMouseY)
+	end
+end
+
+function Renderer.RenderElements()
+	Renderer.ScreenWidth = ScrW()
+	Renderer.ScreenHeight = ScrH()
+	Renderer.MouseX = gui_MouseX()
+	Renderer.MouseY = gui_MouseY()
+	Renderer.HoveredElement = nil
+
+	Renderer.RenderTopElements()
+	Renderer.HandleInput()
 end
 
 hook.Add("DrawOverlay", "port-ui:RenderElements", Renderer.RenderElements)
