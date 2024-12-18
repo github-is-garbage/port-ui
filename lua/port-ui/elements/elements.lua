@@ -106,5 +106,7 @@ function Elements.Create(Name)
 
 	Elements.Store(Element)
 
+	hook.Run("port-ui:ElementCreated", Element, Name)
+
 	return Element
 end
