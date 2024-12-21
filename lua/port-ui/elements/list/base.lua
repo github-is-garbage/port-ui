@@ -71,6 +71,14 @@ function ELEMENT:OnMiddleClick(MouseX, MouseY) -- MouseX and MouseY in element s
 	-- For override
 end
 
+function ELEMENT:OnPositionChanged(OldX, OldY, NewX, NewY)
+	-- For override
+end
+
+function ELEMENT:OnSizeChanged(OldWidth, OldHeight, NewWidth, NewHeight)
+	-- For override
+end
+
 --[[
 	Getters
 --]]
@@ -144,29 +152,53 @@ end
 --]]
 
 function ELEMENT:SetX(X)
+	local OldX = self.m_iX
+
 	self.m_iX = tonumber(X) or 0
+
+	self:OnPositionChanged(OldX, self.m_iY, self.m_iX, self.m_iY)
 end
 
 function ELEMENT:SetY(Y)
+	local OldY = self.m_iY
+
 	self.m_iY = tonumber(Y) or 0
+
+	self:OnPositionChanged(self.m_iX, OldY, self.m_iX, self.m_iY)
 end
 
 function ELEMENT:SetPos(X, Y)
-	self:SetX(X)
-	self:SetY(Y)
+	local OldX, OldY = self.m_iX, self.m_iY
+
+	self.m_iX = tonumber(X) or 0
+	self.m_iY = tonumber(Y) or 0
+
+	self:OnPositionChanged(OldX, OldY, self.m_iX, self.m_iY)
 end
 
 function ELEMENT:SetWidth(Width)
+	local OldWidth = self.m_iWidth
+
 	self.m_iWidth = tonumber(Width) or 0
+
+	self:OnSizeChanged(OldWidth, self.m_iHeight, self.m_iWidth, self.m_iHeight)
 end
 
 function ELEMENT:SetHeight(Height)
+	local OldHeight = self.m_iHeight
+
 	self.m_iHeight = tonumber(Height) or 0
+
+	self:OnSizeChanged(self.m_iWidth, OldHeight, self.m_iWidth, self.m_iHeight)
 end
 
 function ELEMENT:SetSize(Width, Height)
-	self:SetWidth(Width)
-	self:SetHeight(Height)
+	local OldWidth, OldHeight = self.m_iWidth, self.m_iHeight
+
+	self.m_iWidth = tonumber(Width) or 0
+	self.m_iHeight = tonumber(Height) or 0
+
+	self:OnSizeChanged(OldWidth, OldHeight, self.m_iWidth, self.m_iHeight)
 end
 
 function ELEMENT:SetVisible(Visible)
