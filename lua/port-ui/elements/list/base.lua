@@ -3,6 +3,7 @@ local Renderer = portui.Elements.Renderer
 local ELEMENT = {}
 
 AccessorFunc(ELEMENT, "m_strFontName", "FontName", FORCE_STRING)
+AccessorFunc(ELEMENT, "m_bLayingOut", "LayingOut", FORCE_BOOL)
 
 function ELEMENT:IsValid()
 	return self.m_bValid
@@ -108,121 +109,125 @@ function ELEMENT:OnSizeChanged(OldWidth, OldHeight, NewWidth, NewHeight)
 end
 
 function ELEMENT:DoInternalLayout()
-	if self.m_bHasDirtyLayout then
-		local Dock = self.m_iDock
+	self:SetLayingOut(true)
+	do
+		if self.m_bHasDirtyLayout then
+			local Dock = self.m_iDock
 
-		if Dock ~= NODOCK then
-			local Parent = self.m_Parent
+			if Dock ~= NODOCK then
+				local Parent = self.m_Parent
 
-			if IsValid(Parent) then
-				local X, Y = self.m_iX, self.m_iY
-				local Width, Height = self.m_iWidth, self.m_iHeight
+				if IsValid(Parent) then
+					local X, Y = self.m_iX, self.m_iY
+					local Width, Height = self.m_iWidth, self.m_iHeight
 
-				local ParentWidth, ParentHeight = Parent:GetSize()
-				local Left, Right, Top, Bottom = Parent:GetDockPadding()
+					local ParentWidth, ParentHeight = Parent:GetSize()
+					local Left, Right, Top, Bottom = Parent:GetDockPadding()
 
-				local OffsetLeft, OffsetRight, OffsetTop, OffsetBottom = Parent:GetDockingOffset()
+					local OffsetLeft, OffsetRight, OffsetTop, OffsetBottom = Parent:GetDockingOffset()
 
-				-- Offset the offsets if we're not the first child to avoid reapplying edge padding
-				-- TODO: Dock margin will take care of this when it's added
-				if OffsetLeft > 0 then
-					OffsetLeft = OffsetLeft - Left
-				end
-
-				if OffsetRight > 0 then
-					OffsetRight = OffsetRight - Right
-				end
-
-				if OffsetTop > 0 then
-					OffsetTop = OffsetTop - Top
-				end
-
-				if OffsetBottom > 0 then
-					OffsetBottom = OffsetBottom - Bottom
-				end
-
-				-- Layout according to dock type
-				if Dock == FILL then
-					X = Left + OffsetLeft
-					Y = Top + OffsetTop
-
-					Width = ParentWidth - ((Left + Right) + (OffsetLeft + OffsetRight))
-					Height = ParentHeight - ((Top + Bottom) + (OffsetTop + OffsetBottom))
-				elseif Dock == LEFT then
-					if Width <= 0 then
-						Width = ParentWidth * 0.25
+					-- Offset the offsets if we're not the first child to avoid reapplying edge padding
+					-- TODO: Dock margin will take care of this when it's added
+					if OffsetLeft > 0 then
+						OffsetLeft = OffsetLeft - Left
 					end
 
-					X = Left + OffsetLeft
-					Y = Top + OffsetTop
-
-					Height = ParentHeight - ((Top + Bottom) + (OffsetTop + OffsetBottom))
-
-					OffsetLeft = Width
-				elseif Dock == RIGHT then
-					if Width <= 0 then
-						Width = ParentWidth * 0.25
+					if OffsetRight > 0 then
+						OffsetRight = OffsetRight - Right
 					end
 
-					X = ParentWidth - ((Right + OffsetRight) + Width)
-					Y = Top + OffsetTop
-
-					Height = ParentHeight - ((Top + Bottom) + (OffsetTop + OffsetBottom))
-
-					OffsetRight = OffsetRight + Width
-				elseif Dock == TOP then
-					if Height <= 0 then
-						Height = ParentHeight * 0.25
+					if OffsetTop > 0 then
+						OffsetTop = OffsetTop - Top
 					end
 
-					X = Left + OffsetLeft
-					Y = Top + OffsetTop
-
-					Width = ParentWidth - ((Left + Right) + (OffsetLeft + OffsetRight))
-
-					OffsetTop = Height
-				elseif Dock == BOTTOM then
-					if Height <= 0 then
-						Height = ParentHeight * 0.25
+					if OffsetBottom > 0 then
+						OffsetBottom = OffsetBottom - Bottom
 					end
 
-					X = Left + OffsetLeft
-					Y = ParentHeight - ((Bottom + OffsetBottom) + Height)
+					-- Layout according to dock type
+					if Dock == FILL then
+						X = Left + OffsetLeft
+						Y = Top + OffsetTop
 
-					Width = ParentWidth - ((Left + Right) + (OffsetLeft + OffsetRight))
+						Width = ParentWidth - ((Left + Right) + (OffsetLeft + OffsetRight))
+						Height = ParentHeight - ((Top + Bottom) + (OffsetTop + OffsetBottom))
+					elseif Dock == LEFT then
+						if Width <= 0 then
+							Width = ParentWidth * 0.25
+						end
 
-					OffsetBottom = OffsetBottom + Height
+						X = Left + OffsetLeft
+						Y = Top + OffsetTop
+
+						Height = ParentHeight - ((Top + Bottom) + (OffsetTop + OffsetBottom))
+
+						OffsetLeft = Width
+					elseif Dock == RIGHT then
+						if Width <= 0 then
+							Width = ParentWidth * 0.25
+						end
+
+						X = ParentWidth - ((Right + OffsetRight) + Width)
+						Y = Top + OffsetTop
+
+						Height = ParentHeight - ((Top + Bottom) + (OffsetTop + OffsetBottom))
+
+						OffsetRight = OffsetRight + Width
+					elseif Dock == TOP then
+						if Height <= 0 then
+							Height = ParentHeight * 0.25
+						end
+
+						X = Left + OffsetLeft
+						Y = Top + OffsetTop
+
+						Width = ParentWidth - ((Left + Right) + (OffsetLeft + OffsetRight))
+
+						OffsetTop = Height
+					elseif Dock == BOTTOM then
+						if Height <= 0 then
+							Height = ParentHeight * 0.25
+						end
+
+						X = Left + OffsetLeft
+						Y = ParentHeight - ((Bottom + OffsetBottom) + Height)
+
+						Width = ParentWidth - ((Left + Right) + (OffsetLeft + OffsetRight))
+
+						OffsetBottom = OffsetBottom + Height
+					end
+
+					-- Remove the offset of the offsets
+					if OffsetLeft > 0 then
+						OffsetLeft = OffsetLeft + Left
+					end
+
+					if OffsetRight > 0 then
+						OffsetRight = OffsetRight + Right
+					end
+
+					if OffsetTop > 0 then
+						OffsetTop = OffsetTop + Top
+					end
+
+					if OffsetBottom > 0 then
+						OffsetBottom = OffsetBottom + Bottom
+					end
+
+					-- Update everyone
+					Parent:UpdateDockingOffset(OffsetLeft, OffsetRight, OffsetTop, OffsetBottom)
+
+					self:SetPos(X, Y)
+					self:SetSize(Width, Height)
 				end
-
-				-- Remove the offset of the offsets
-				if OffsetLeft > 0 then
-					OffsetLeft = OffsetLeft + Left
-				end
-
-				if OffsetRight > 0 then
-					OffsetRight = OffsetRight + Right
-				end
-
-				if OffsetTop > 0 then
-					OffsetTop = OffsetTop + Top
-				end
-
-				if OffsetBottom > 0 then
-					OffsetBottom = OffsetBottom + Bottom
-				end
-
-				-- Update everyone
-				Parent:UpdateDockingOffset(OffsetLeft, OffsetRight, OffsetTop, OffsetBottom)
-
-				self:SetPos(X, Y)
-				self:SetSize(Width, Height)
 			end
+
+			self.m_bHasDirtyLayout = false
 		end
 
-		self.m_bHasDirtyLayout = false
+		self:PerformLayout(self:GetSize())
 	end
-
-	self:PerformLayout(self:GetSize())
+	self:SetLayingOut(false)
 end
 
 function ELEMENT:PerformLayout(Width, Height)
@@ -489,7 +494,7 @@ function ELEMENT:SetParent(Parent)
 end
 
 function ELEMENT:InvalidateLayout()
-	if not self.m_bHasDirtyLayout then
+	if not self.m_bHasDirtyLayout and not self:GetLayingOut() then
 		self:UpdateDockingOffset(0, 0, 0, 0)
 
 		self.m_bHasDirtyLayout = true

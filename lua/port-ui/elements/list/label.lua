@@ -14,7 +14,7 @@ function ELEMENT:SetText(Text)
 
 	self.m_strText = Text
 
-	self:SetSize(self:GetTextSize()) -- TODO: Figure out why PerformLayout causes this to infinitely layout
+	self:InvalidateLayout()
 end
 
 function ELEMENT:GetTextSize()
@@ -41,6 +41,10 @@ function ELEMENT:PaintForeground()
 		end
 		Renderer.UnSwapPortRect()
 	end
+end
+
+function ELEMENT:PerformLayout()
+	self:SetSize(self:GetTextSize())
 end
 
 portui.Elements.Register("Label", ELEMENT, "Base")
