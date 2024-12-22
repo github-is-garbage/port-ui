@@ -8,6 +8,17 @@ function ELEMENT:IsValid()
 	return self.m_bValid
 end
 
+function ELEMENT:Remove()
+	for ChildIndex = #self.m_Children, 1, -1 do
+		self.m_Children[ChildIndex]:Remove()
+		self.m_Children[ChildIndex] = nil
+	end
+
+	self.m_bValid = false
+
+	portui.Elements.UnStore(self)
+end
+
 --[[
 	Hooks
 --]]
