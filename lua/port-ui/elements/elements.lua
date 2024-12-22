@@ -61,9 +61,11 @@ end
 function Elements.UnStore(Element)
 	local ElementIndex = 0
 
-	for Index = 1, #Elements.List do
+	for Index = #Elements.List, 1, -1 do
 		if Elements.List[Index] == Element then
 			ElementIndex = Index
+			Elements.List[Index] = nil
+
 			break
 		end
 	end
@@ -78,14 +80,24 @@ function Elements.UnStore(Element)
 	assert(istable(Elements.KeyedList[TypeName]), "Failed to UnStore element with unkeyed type name! This should never happen!")
 	assert(istable(Elements.KeyedListSequential[TypeName]), "Failed to UnStore element with unkeyed type name! This should never happen!")
 
-	Elements.KeyedList[TypeName][ElementIndex] = nil
+	local KeyedList = Elements.KeyedList[TypeName]
 	local SequentialList = Elements.KeyedListSequential[TypeName]
+
+	KeyedList[ElementIndex] = nil
 
 	for Index = #SequentialList, 1, -1 do
 		if SequentialList[Index] == Element then
 			SequentialList[Index] = nil
 			break
 		end
+	end
+
+	if #KeyedList < 1 then
+		Elements.KeyedList[TypeName] = nil
+	end
+
+	if #SequentialList < 1 then
+		Elements.KeyedListSequential[TypeName] = nil
 	end
 end
 
