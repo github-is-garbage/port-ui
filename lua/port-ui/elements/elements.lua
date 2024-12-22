@@ -94,7 +94,8 @@ function Elements.UnStore(Element)
 		end
 	end
 
-	if #KeyedList < 1 then
+	-- Remove keys if there's nothing in them
+	if table.Count(KeyedList) < 1 then
 		Elements.KeyedList[TypeName] = nil
 	end
 
