@@ -9,7 +9,10 @@ function ELEMENT:Init()
 end
 
 function ELEMENT:SetText(Text)
-	self.m_strText = tostring(Text)
+	Text = tostring(Text)
+	if Text == self.m_strText then return end
+
+	self.m_strText = Text
 
 	self:InvalidateLayout()
 end
