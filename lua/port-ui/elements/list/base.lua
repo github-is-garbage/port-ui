@@ -300,6 +300,24 @@ function ELEMENT:GetDockPadding()
 	return self.m_iDockPaddingLeft, self.m_iDockPaddingRight, self.m_iDockPaddingTop, self.m_iDockPaddingBottom
 end
 
+function ELEMENT:AddChild(Child, Dock)
+	if isstring(Child) then
+		Child = portui.Elements.Create(Child)
+	end
+
+	if not IsValid(Child) then
+		-- TODO: Error?
+		return
+	end
+
+	Child:SetDock(Dock)
+	Child:SetParent(self)
+
+	self:InvalidateLayout()
+
+	return Child
+end
+
 --[[
 	Setters
 --]]
