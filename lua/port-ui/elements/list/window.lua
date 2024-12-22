@@ -6,7 +6,7 @@ AccessorFunc(ELEMENT, "m_strTitle", "Title", FORCE_STRING)
 AccessorFunc(ELEMENT, "m_bDraggable", "Draggable", FORCE_BOOL)
 
 function ELEMENT:Init()
-	self:SetDockPadding(2, 2, 14, 2)
+	self:SetDockPadding(4, 4, 16, 4)
 
 	self.m_DragData = {}
 
