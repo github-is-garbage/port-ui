@@ -549,6 +549,8 @@ end
 function ELEMENT:RegisterChild(Child)
 	if not table.HasValue(self.m_Children, Child) then
 		table.insert(self.m_Children, Child)
+
+		self:InvalidateLayout()
 	end
 end
 
@@ -557,6 +559,8 @@ function ELEMENT:UnRegisterChild(Child)
 
 	if Index then
 		table.remove(self.m_Children, Index)
+
+		self:InvalidateLayout()
 	end
 end
 
