@@ -1,5 +1,6 @@
 local ELEMENT = {}
 
+-- TODO: Fix incomplete sync between alpha bar and the rest
 function ELEMENT:Init()
 	self.m_matColors = Material("port-ui/colors.png")
 	print(file.Exists("materials/port-ui/colors.png", "GAME"))
@@ -18,6 +19,7 @@ function ELEMENT:Init()
 	function self.m_ColorBar:OnValueChanged(OldValue, NewValue)
 		local BarColor = self:GetBarColor()
 
+		self:GetParent().m_ColorCube:SetColor(BarColor) -- Keep this fella in sync
 		self:GetParent():UpdateColor(BarColor)
 	end
 
@@ -30,6 +32,7 @@ function ELEMENT:Init()
 		local CurrentColor = self:GetParent():GetColor()
 		CurrentColor.a = self:GetMaximumValue() - NewValue -- Inverse
 
+		self:GetParent().m_ColorCube:SetColor(CurrentColor) -- Keep this fella in sync
 		self:GetParent():UpdateColor(CurrentColor)
 	end
 
@@ -54,7 +57,7 @@ function ELEMENT:SetColor(Color)
 	self:OnValueChanged(self.m_Color)
 end
 
-function ELEMENT:UpdateColor(Color) -- Call OnValueChanged without changing Color reference
+function ELEMENT:UpdateColor(Color) -- Update by reference
 	self.m_Color.r = Color.r
 	self.m_Color.g = Color.g
 	self.m_Color.b = Color.b

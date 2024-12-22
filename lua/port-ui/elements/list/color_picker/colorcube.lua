@@ -16,7 +16,7 @@ end
 function ELEMENT:SetColor(RealColor)
 	self.m_Color = RealColor
 
-	self.m_BaseColor = Color(RealColor.r, RealColor.g, RealColor.b, 255)
+	self.m_BaseColor = HSVToColor(ColorToHSV(RealColor), 1, 1)
 end
 
 function ELEMENT:OnValueChanged(NewColor)
@@ -27,7 +27,7 @@ function ELEMENT:UpdateColor(X, Y)
 	X = math.Remap(X, 0, self:GetWidth(), 0, 1)
 	Y = math.Remap(Y, 0, self:GetHeight(), 0, 1)
 
-	local Hue = ColorToHSV(self:GetColor())
+	local Hue = ColorToHSV(self.m_BaseColor)
 	local Saturation = 1 - X
 	local Value = 1 - Y
 
