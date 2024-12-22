@@ -39,4 +39,22 @@ function Input.GetInputElement()
 	return Input.m_InputFocus
 end
 
+function Input.ClickElement(Element, MouseX, MouseY)
+	local ElementX, ElementY = Element:GetRelativePos()
+	local RelativeMouseX = MouseX - ElementX
+	local RelativeMouseY = MouseY - ElementY
+
+	if Input.WasButtonJustPressed(MOUSE_LEFT) then
+		Element:OnLeftClick(RelativeMouseX, RelativeMouseY)
+	end
+
+	if Input.WasButtonJustPressed(MOUSE_RIGHT) then
+		Element:OnRightClick(RelativeMouseX, RelativeMouseY)
+	end
+
+	if Input.WasButtonJustPressed(MOUSE_MIDDLE) then
+		Element:OnMiddleClick(RelativeMouseX, RelativeMouseY)
+	end
+end
+
 hook.Add("DrawOverlay", "port-ui:CollectButtons", Input.CollectButtons)
