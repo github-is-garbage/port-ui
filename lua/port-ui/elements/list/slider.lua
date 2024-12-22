@@ -84,15 +84,13 @@ function ELEMENT:OnLeftClick(MouseX)
 end
 
 function ELEMENT:PerformLayout(Width, Height)
-	if IsValid(self.m_Knob) then
-		local ValuePercentage = math.Remap(self.m_flValue, self.m_flMinimumValue, self.m_flMaximumValue, 0, 1)
-		local ValueX = Width * ValuePercentage
+	local ValuePercentage = math.Remap(self.m_flValue, self.m_flMinimumValue, self.m_flMaximumValue, 0, 1)
+	local ValueX = Width * ValuePercentage
 
-		ValueX = math.Clamp(ValueX, 0, Width - self.m_Knob:GetWidth())
+	ValueX = math.Clamp(ValueX, 0, Width - self.m_Knob:GetWidth())
 
-		self.m_Knob:SetX(ValueX)
-		self.m_Knob:SetHeight(Height)
-	end
+	self.m_Knob:SetX(ValueX)
+	self.m_Knob:SetHeight(Height)
 end
 
 portui.Elements.Register("Slider", ELEMENT, "Base")

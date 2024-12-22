@@ -37,26 +37,18 @@ function ELEMENT:Init()
 	end
 
 	function CloseButton:OnLeftClick()
-		if IsValid(self:GetParent()) then
-			self:GetParent():Remove()
-		end
+		self:GetParent():Remove()
 	end
 
 	self.m_CloseButton = CloseButton
 end
 
 function ELEMENT:GetTitle()
-	if IsValid(self.m_Title) then
-		return self.m_Title:GetText()
-	else
-		return ""
-	end
+	return self.m_Title:GetText()
 end
 
 function ELEMENT:SetTitle(Title)
-	if IsValid(self.m_Title) then
-		self.m_Title:SetText(Title)
-	end
+	self.m_Title:SetText(Title)
 end
 
 function ELEMENT:Think()
@@ -115,19 +107,13 @@ end
 function ELEMENT:PerformLayout(Width, Height)
 	local TitleBarHeight = self:GetTitleBarHeight()
 
-	if IsValid(self.m_Title) then
-		local TitleWidth, TitleHeight = self.m_Title:GetTextSize() -- Use text size because the panel may not have been laid out yet
+	local TitleWidth, TitleHeight = self.m_Title:GetTextSize() -- Use text size because the panel may not have been laid out yet
+	self.m_Title:SetY((TitleBarHeight * 0.5) - (TitleHeight * 0.5))
+	self.m_Title:SetX(self.m_Title:GetY() + 3) -- Little bump over
 
-		self.m_Title:SetY((TitleBarHeight * 0.5) - (TitleHeight * 0.5))
-		self.m_Title:SetX(self.m_Title:GetY() + 3) -- Little bump over
-	end
-
-	if IsValid(self.m_CloseButton) then
-		local CloseButtonWidth, CloseButtonHeight = self.m_CloseButton:GetSize()
-
-		self.m_CloseButton:SetY((TitleBarHeight * 0.5) - (CloseButtonHeight * 0.5))
-		self.m_CloseButton:SetX(Width - CloseButtonWidth - self.m_CloseButton:GetY())
-	end
+	local CloseButtonWidth, CloseButtonHeight = self.m_CloseButton:GetSize()
+	self.m_CloseButton:SetY((TitleBarHeight * 0.5) - (CloseButtonHeight * 0.5))
+	self.m_CloseButton:SetX(Width - CloseButtonWidth - self.m_CloseButton:GetY())
 end
 
 portui.Elements.Register("Window", ELEMENT, "Base")
