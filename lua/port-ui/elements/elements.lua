@@ -124,3 +124,10 @@ function Elements.Create(Name)
 
 	return Element
 end
+
+-- Debug cmd
+concommand.Add("portui_dumpelements", function()
+	PrintTable(Elements.List)
+	PrintTable(Elements.KeyedList)
+	PrintTable(Elements.KeyedListSequential)
+end)
