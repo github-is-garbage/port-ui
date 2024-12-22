@@ -49,7 +49,7 @@ function ELEMENT:SetValue(Value)
 
 	self:OnValueChanged(OldValue, self.m_flValue)
 
-	self:InvalidateParent(true)
+	self:InvalidateLayout()
 end
 
 function ELEMENT:Think()
