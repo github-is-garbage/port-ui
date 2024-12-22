@@ -31,6 +31,7 @@ function ELEMENT:InternalInit()
 
 	self.m_bVisible = true
 	self.m_bValid = true
+	self.m_bInputEnabled = true
 	self:SetFontName("BudgetLabel")
 
 	self.m_Parent = nil
@@ -287,6 +288,10 @@ function ELEMENT:GetVisible()
 	return self.m_bVisible
 end
 
+function ELEMENT:GetHasInputEnabled()
+	return self.m_bInputEnabled
+end
+
 function ELEMENT:GetParent()
 	return self.m_Parent
 end
@@ -388,6 +393,10 @@ end
 
 function ELEMENT:SetVisible(Visible)
 	self.m_bVisible = tobool(Visible)
+end
+
+function ELEMENT:SetHasInputEnabled(Enabled)
+	self.m_bInputEnabled = tobool(Enabled)
 end
 
 function ELEMENT:SetParent(Parent)
