@@ -288,6 +288,12 @@ function ELEMENT:GetVisible()
 end
 
 function ELEMENT:GetHasInputEnabled()
+	if IsValid(self.m_Parent) then
+		if not self.m_Parent:GetHasInputEnabled() then
+			return false
+		end
+	end
+
 	return self.m_bInputEnabled
 end
 
