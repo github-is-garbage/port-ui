@@ -10,6 +10,7 @@ portui.IncludeRelative("elements/renderer.lua")
 
 portui.IncludeRelative("elements/list/base.lua")
 portui.IncludeRelative("elements/list/window.lua")
+portui.IncludeRelative("elements/list/popup_window.lua")
 portui.IncludeRelative("elements/list/label.lua")
 portui.IncludeRelative("elements/list/button.lua")
 portui.IncludeRelative("elements/list/radiobutton.lua")
