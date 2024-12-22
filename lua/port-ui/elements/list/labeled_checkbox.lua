@@ -32,6 +32,8 @@ end
 
 function ELEMENT:SetText(Text)
 	self.m_Label:SetText(Text)
+
+	self:InvalidateLayout()
 end
 
 function ELEMENT:OnLeftClick()
