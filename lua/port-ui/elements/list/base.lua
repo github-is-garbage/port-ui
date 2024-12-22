@@ -95,15 +95,15 @@ function ELEMENT:OnSizeChanged(OldWidth, OldHeight, NewWidth, NewHeight)
 end
 
 function ELEMENT:DoInternalLayout()
-	if self:GetHasDirtyLayout() then
-		local Dock = self:GetDock()
+	if self.m_bHasDirtyLayout then
+		local Dock = self.m_iDock
 
 		if Dock ~= NODOCK then
-			local Parent = self:GetParent()
+			local Parent = self.m_Parent
 
 			if IsValid(Parent) then
-				local X, Y = self:GetPos()
-				local Width, Height = self:GetSize()
+				local X, Y = self.m_iX, self.m_iY
+				local Width, Height = self.m_iWidth, self.m_iHeight
 
 				local ParentWidth, ParentHeight = Parent:GetSize()
 				local Left, Right, Top, Bottom = Parent:GetDockPadding()
