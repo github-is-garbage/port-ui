@@ -115,7 +115,7 @@ function ELEMENT:PerformLayout(Width, Height)
 	local TitleBarHeight = self:GetTitleBarHeight()
 
 	if IsValid(self.m_Title) then
-		local TitleWidth, TitleHeight = self.m_Title:GetSize()
+		local TitleWidth, TitleHeight = self.m_Title:GetTextSize() -- Use text size because the panel may not have been laid out yet
 
 		self.m_Title:SetY((TitleBarHeight * 0.5) - (TitleHeight * 0.5))
 		self.m_Title:SetX(self.m_Title:GetY() + 3) -- Little bump over
