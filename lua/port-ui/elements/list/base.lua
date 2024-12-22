@@ -381,6 +381,20 @@ function ELEMENT:AddChild(Child, Dock)
 	return Child
 end
 
+function ELEMENT:IsChildOf(Element)
+	local Parent = self:GetParent()
+
+	if not IsValid(Parent) then
+		return false
+	end
+
+	if Element == Parent then
+		return true
+	end
+
+	return Parent:IsChildOf(Element)
+end
+
 --[[
 	Setters
 --]]
