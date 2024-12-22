@@ -89,7 +89,6 @@ function Renderer.RenderElement(Element, IsChild)
 
 	if Element:GetHasDirtyLayout() then
 		Element:DoInternalLayout()
-		Element:UpdateDockingOffset(0, 0, 0, 0) -- Reset to avoid "stacking"
 	end
 
 	local ScreenWidth, ScreenHeight = Renderer.ScreenWidth, Renderer.ScreenHeight

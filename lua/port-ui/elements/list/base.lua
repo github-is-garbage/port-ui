@@ -118,6 +118,16 @@ function ELEMENT:DoInternalLayout()
 				local Parent = self.m_Parent
 
 				if IsValid(Parent) then
+					if not Parent:GetHasDirtyLayout() then
+						-- TODO: Look into this shit and find a better solution
+
+						-- This fixes some docking issues with the offset stacking but
+						-- it also causes issues with the docking "flickering"
+						-- as well as some bad performance because everything lays out constantly :/
+						Parent:InvalidateLayout()
+						Parent:InvalidateChildren(true)
+					end
+
 					local X, Y = self.m_iX, self.m_iY
 					local Width, Height = self.m_iWidth, self.m_iHeight
 
