@@ -419,9 +419,13 @@ function ELEMENT:InvalidateLayout()
 	end
 end
 
-function ELEMENT:InvalidateChildren()
+function ELEMENT:InvalidateChildren(Recursive)
 	for ChildIndex = 1, #self.m_Children do
 		self.m_Children[ChildIndex]:InvalidateLayout()
+
+		if Recursive then
+			self.m_Children[ChildIndex]:InvalidateChildren(true)
+		end
 	end
 end
 
