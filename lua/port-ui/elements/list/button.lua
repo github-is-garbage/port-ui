@@ -33,7 +33,6 @@ function ELEMENT:PaintForeground(RenderWidth, RenderHeight, Width, Height)
 			surface.SetFont(self:GetFontName())
 			surface.SetTextColor(255, 255, 255, 255)
 
-			local Text = self:GetText()
 			local TextWidth, TextHeight = surface.GetTextSize(Text)
 
 			local TextX = (Width * 0.5) - (TextWidth * 0.5)
