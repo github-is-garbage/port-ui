@@ -70,6 +70,10 @@ function Renderer.RenderElement(Element, IsChild)
 		return
 	end
 
+	if Element:GetHasDirtyLayout() then
+		Element:DoInternalLayout()
+	end
+
 	local ScreenWidth, ScreenHeight = Renderer.ScreenWidth, Renderer.ScreenHeight
 
 	local ElementX, ElementY = Element:GetRelativePos()

@@ -24,6 +24,21 @@ function ELEMENT:InternalInit()
 
 	self.m_Parent = nil
 	self.m_Children = {}
+
+	self.m_bHasDirtyLayout = true
+
+	-- Docking stuff
+	self.m_iDock = NODOCK
+
+	self.m_iDockLeftOffset = 0
+	self.m_iDockRightOffset = 0
+	self.m_iDockTopOffset = 0
+	self.m_iDockBottomOffset = 0
+
+	self.m_iDockPaddingLeft = 0
+	self.m_iDockPaddingRight = 0
+	self.m_iDockPaddingTop = 0
+	self.m_iDockPaddingBottom = 0
 end
 
 function ELEMENT:Init()
@@ -76,6 +91,128 @@ function ELEMENT:OnPositionChanged(OldX, OldY, NewX, NewY)
 end
 
 function ELEMENT:OnSizeChanged(OldWidth, OldHeight, NewWidth, NewHeight)
+	-- For override
+end
+
+function ELEMENT:DoInternalLayout()
+	if self:GetHasDirtyLayout() then
+		local Dock = self:GetDock()
+
+		if Dock ~= NODOCK then
+			local Parent = self:GetParent()
+
+			if IsValid(Parent) then
+				local X, Y = self:GetPos()
+				local Width, Height = self:GetSize()
+
+				local ParentWidth, ParentHeight = Parent:GetSize()
+				local Left, Right, Top, Bottom = Parent:GetDockPadding()
+
+				local OffsetLeft, OffsetRight, OffsetTop, OffsetBottom = Parent:GetDockingOffset()
+
+				-- Offset the offsets if we're not the first child to avoid reapplying edge padding
+				-- Dock margin will take care of this
+				if OffsetLeft > 0 then
+					OffsetLeft = OffsetLeft - Left
+				end
+
+				if OffsetRight > 0 then
+					OffsetRight = OffsetRight - Right
+				end
+
+				if OffsetTop > 0 then
+					OffsetTop = OffsetTop - Top
+				end
+
+				if OffsetBottom > 0 then
+					OffsetBottom = OffsetBottom - Bottom
+				end
+
+				-- Layout according to dock type
+				if Dock == FILL then
+					X = Left + OffsetLeft
+					Y = Top + OffsetTop
+
+					Width = ParentWidth - ((Left + Right) + (OffsetLeft + OffsetRight))
+					Height = ParentHeight - ((Top + Bottom) + (OffsetTop + OffsetBottom))
+				elseif Dock == LEFT then
+					if Width <= 0 then
+						Width = ParentWidth * 0.25
+					end
+
+					X = Left + OffsetLeft
+					Y = Top + OffsetTop
+
+					Height = ParentHeight - ((Top + Bottom) + (OffsetTop + OffsetBottom))
+
+					OffsetLeft = Width
+				elseif Dock == RIGHT then
+					if Width <= 0 then
+						Width = ParentWidth * 0.25
+					end
+
+					X = ParentWidth - ((Right + OffsetRight) + Width)
+					Y = Top + OffsetTop
+
+					Height = ParentHeight - ((Top + Bottom) + (OffsetTop + OffsetBottom))
+
+					OffsetRight = OffsetRight + Width
+				elseif Dock == TOP then
+					if Height <= 0 then
+						Height = ParentHeight * 0.25
+					end
+
+					X = Left + OffsetLeft
+					Y = Top + OffsetTop
+
+					Width = ParentWidth - ((Left + Right) + (OffsetLeft + OffsetRight))
+
+					OffsetTop = Height
+				elseif Dock == BOTTOM then
+					if Height <= 0 then
+						Height = ParentHeight * 0.25
+					end
+
+					X = Left + OffsetLeft
+					Y = ParentHeight - ((Bottom + OffsetBottom) + Height)
+
+					Width = ParentWidth - ((Left + Right) + (OffsetLeft + OffsetRight))
+
+					OffsetBottom = OffsetBottom + Height
+				end
+
+				-- Remove the offset of the offsets to prevent "decay"
+				if OffsetLeft > 0 then
+					OffsetLeft = OffsetLeft + Left
+				end
+
+				if OffsetRight > 0 then
+					OffsetRight = OffsetRight + Right
+				end
+
+				if OffsetTop > 0 then
+					OffsetTop = OffsetTop + Top
+				end
+
+				if OffsetBottom > 0 then
+					OffsetBottom = OffsetBottom + Bottom
+				end
+
+				-- Update everyone
+				Parent:UpdateDockingOffset(OffsetLeft, OffsetRight, OffsetTop, OffsetBottom)
+
+				self:SetPos(X, Y)
+				self:SetSize(Width, Height)
+			end
+		end
+
+		self.m_bHasDirtyLayout = false
+	end
+
+	self:PerformLayout(self:GetSize())
+end
+
+function ELEMENT:PerformLayout(Width, Height)
 	-- For override
 end
 
@@ -147,6 +284,22 @@ function ELEMENT:GetChildren()
 	return self.m_Children
 end
 
+function ELEMENT:GetHasDirtyLayout()
+	return self.m_bHasDirtyLayout
+end
+
+function ELEMENT:GetDock()
+	return self.m_iDock
+end
+
+function ELEMENT:GetDockingOffset()
+	return self.m_iDockLeftOffset, self.m_iDockRightOffset, self.m_iDockTopOffset, self.m_iDockBottomOffset
+end
+
+function ELEMENT:GetDockPadding()
+	return self.m_iDockPaddingLeft, self.m_iDockPaddingRight, self.m_iDockPaddingTop, self.m_iDockPaddingBottom
+end
+
 --[[
 	Setters
 --]]
@@ -181,6 +334,7 @@ function ELEMENT:SetWidth(Width)
 
 	self.m_iWidth = tonumber(Width) or 0
 
+	self:InvalidateLayout()
 	self:OnSizeChanged(OldWidth, self.m_iHeight, self.m_iWidth, self.m_iHeight)
 end
 
@@ -189,6 +343,7 @@ function ELEMENT:SetHeight(Height)
 
 	self.m_iHeight = tonumber(Height) or 0
 
+	self:InvalidateLayout()
 	self:OnSizeChanged(self.m_iWidth, OldHeight, self.m_iWidth, self.m_iHeight)
 end
 
@@ -198,6 +353,7 @@ function ELEMENT:SetSize(Width, Height)
 	self.m_iWidth = tonumber(Width) or 0
 	self.m_iHeight = tonumber(Height) or 0
 
+	self:InvalidateLayout()
 	self:OnSizeChanged(OldWidth, OldHeight, self.m_iWidth, self.m_iHeight)
 end
 
@@ -215,6 +371,38 @@ function ELEMENT:SetParent(Parent)
 	if IsValid(self.m_Parent) then
 		self.m_Parent:RegisterChild(self)
 	end
+end
+
+function ELEMENT:InvalidateLayout()
+	if not self:GetHasDirtyLayout() then
+		self.m_bHasDirtyLayout = true
+	end
+end
+
+function ELEMENT:SetDock(Dock)
+	Dock = tonumber(Dock) or NODOCK
+
+	if Dock < NODOCK or Dock > BOTTOM then
+		Dock = NODOCK
+	end
+
+	self.m_iDock = Dock
+
+	self:InvalidateLayout()
+end
+
+function ELEMENT:UpdateDockingOffset(Left, Right, Top, Bottom)
+	self.m_iDockLeftOffset = tonumber(Left) or 0
+	self.m_iDockRightOffset = tonumber(Right) or 0
+	self.m_iDockTopOffset = tonumber(Top) or 0
+	self.m_iDockBottomOffset = tonumber(Bottom) or 0
+end
+
+function ELEMENT:SetDockPadding(Left, Right, Top, Bottom)
+	self.m_iDockPaddingLeft = tonumber(Left) or 0
+	self.m_iDockPaddingRight = tonumber(Right) or 0
+	self.m_iDockPaddingTop = tonumber(Top) or 0
+	self.m_iDockPaddingBottom = tonumber(Bottom) or 0
 end
 
 --[[
