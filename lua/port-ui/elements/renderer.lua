@@ -16,6 +16,7 @@ local math_Clamp = math.Clamp
 local math_min = math.min
 local input_IsKeyTrapping = input.IsKeyTrapping
 local dragndrop_IsDragging = dragndrop.IsDragging
+local draw_NoTexture = draw.NoTexture
 
 Renderer.ScreenWidth = ScrW()
 Renderer.ScreenHeight = ScrH()
@@ -127,6 +128,8 @@ function Renderer.RenderElement(Element, IsChild)
 		Renderer.TopViewPortWidth = ViewPortWidth
 		Renderer.TopViewPortHeight = ViewPortHeight
 	end
+
+	draw_NoTexture()
 
 	render_SetViewPort(ViewPortX, ViewPortY, ViewPortWidth, ViewPortHeight)
 	do
