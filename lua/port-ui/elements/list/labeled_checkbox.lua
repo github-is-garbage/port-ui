@@ -10,7 +10,7 @@ function ELEMENT:Init()
 		self:GetParent():OnValueChanged(OldValue, NewValue)
 	end
 
-	self.m_Label = self:AddChild("Label")
+	self.m_Label = self:AddChild("Label", FILL)
 	self.m_Label:SetText("Checkbox")
 	self.m_Label:SetHasInputEnabled(false) -- Clickthrough to the container
 end
@@ -40,13 +40,8 @@ function ELEMENT:OnLeftClick()
 	self:SetChecked(not self:GetChecked())
 end
 
-function ELEMENT:PerformLayout(Width, Height)
-	self.m_Checkbox:SetSize(Height, Height)
-
-	local _, LabelHeight = self.m_Label:GetSize()
-	self.m_Label:SetPos(Height + 3, (Height * 0.5) - (LabelHeight * 0.5)) -- Center the label vertically offset from the checkbox
-
-	self:SizeToChildren(true, false)
+function ELEMENT:OnSizeChanged(OldWidth, OldHeight, NewWidth, NewHeight)
+	self.m_Checkbox:SetSize(NewHeight, NewHeight)
 end
 
 portui.Elements.Register("LabeledCheckbox", ELEMENT, "Base")
