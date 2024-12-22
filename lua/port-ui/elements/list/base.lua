@@ -429,6 +429,16 @@ function ELEMENT:InvalidateChildren(Recursive)
 	end
 end
 
+function ELEMENT:InvalidateParent(UpdateChildren)
+	if not IsValid(self.m_Parent) then return end
+
+	self.m_Parent:InvalidateLayout()
+
+	if UpdateChildren then
+		self.m_Parent:InvalidateChildren(true)
+	end
+end
+
 function ELEMENT:SetDock(Dock)
 	Dock = tonumber(Dock) or NODOCK
 
