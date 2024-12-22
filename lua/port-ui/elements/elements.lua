@@ -33,6 +33,8 @@ function Elements.Register(Name, Meta, BaseName)
 	end
 
 	Elements.Metas[Name] = Meta
+
+	RegisterMetaTable("portui_" .. Name, Meta)
 end
 
 -- TODO: Check if element was already stored
