@@ -124,7 +124,7 @@ function ELEMENT:DoInternalLayout()
 				local OffsetLeft, OffsetRight, OffsetTop, OffsetBottom = Parent:GetDockingOffset()
 
 				-- Offset the offsets if we're not the first child to avoid reapplying edge padding
-				-- Dock margin will take care of this
+				-- TODO: Dock margin will take care of this when it's added
 				if OffsetLeft > 0 then
 					OffsetLeft = OffsetLeft - Left
 				end
@@ -194,7 +194,7 @@ function ELEMENT:DoInternalLayout()
 					OffsetBottom = OffsetBottom + Height
 				end
 
-				-- Remove the offset of the offsets to prevent "decay"
+				-- Remove the offset of the offsets
 				if OffsetLeft > 0 then
 					OffsetLeft = OffsetLeft + Left
 				end
