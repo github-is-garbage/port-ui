@@ -25,6 +25,8 @@ end
 function ELEMENT:InternalInit()
 	self.m_iX = 0
 	self.m_iY = 0
+	self.m_iMinimumWidth = 0
+	self.m_iMinimumHeight = 0
 	self.m_iWidth = 0
 	self.m_iHeight = 0
 
@@ -272,6 +274,18 @@ function ELEMENT:GetRelativePos()
 	return self:GetRelativeX(), self:GetRelativeY()
 end
 
+function ELEMENT:GetMinimumWidth()
+	return self.m_iMinimumWidth
+end
+
+function ELEMENT:GetMinimumHeight()
+	return self.m_iMinimumHeight
+end
+
+function ELEMENT:GetMinimumSize()
+	return self.m_iMinimumWidth, self.m_iMinimumHeight
+end
+
 function ELEMENT:GetWidth()
 	return self.m_iWidth
 end
@@ -375,10 +389,29 @@ function ELEMENT:SetPos(X, Y)
 	self:OnPositionChanged(OldX, OldY, self.m_iX, self.m_iY)
 end
 
+function ELEMENT:SetMinimumWidth(Width)
+	self.m_iMinimumWidth = tonumber(Width) or 0
+
+	self:SetWidth(self:GetWidth())
+end
+
+function ELEMENT:SetMinimumHeight(Height)
+	self.m_iMinimumHeight = tonumber(Height) or 0
+
+	self:SetHeight(self:GetHeight())
+end
+
+function ELEMENT:SetMinimumSize(Width, Height)
+	self.m_iMinimumWidth = tonumber(Width) or 0
+	self.m_iMinimumHeight = tonumber(Height) or 0
+
+	self:SetSize(self:GetSize())
+end
+
 function ELEMENT:SetWidth(Width)
 	local OldWidth = self.m_iWidth
 
-	self.m_iWidth = tonumber(Width) or 0
+	self.m_iWidth = math.max(tonumber(Width) or 0, self.m_iMinimumWidth)
 
 	if OldWidth == self.m_iWidth then return end
 
@@ -389,7 +422,7 @@ end
 function ELEMENT:SetHeight(Height)
 	local OldHeight = self.m_iHeight
 
-	self.m_iHeight = tonumber(Height) or 0
+	self.m_iHeight = math.max(tonumber(Height) or 0, self.m_iMinimumHeight)
 
 	if OldHeight == self.m_iHeight then return end
 
@@ -400,8 +433,8 @@ end
 function ELEMENT:SetSize(Width, Height)
 	local OldWidth, OldHeight = self.m_iWidth, self.m_iHeight
 
-	self.m_iWidth = tonumber(Width) or 0
-	self.m_iHeight = tonumber(Height) or 0
+	self.m_iWidth = math.max(tonumber(Width) or 0, self.m_iMinimumWidth)
+	self.m_iHeight = math.max(tonumber(Height) or 0, self.m_iMinimumHeight)
 
 	if OldWidth == self.m_iWidth and OldHeight == self.m_iHeight then return end
 
