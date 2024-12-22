@@ -15,6 +15,23 @@ function ELEMENT:Init()
 	self:SetMaximumValue(1)
 
 	self:SetValue(0)
+
+	-- Knob
+	local Base = FindMetaTable("portui_Base")
+	local ButtonBase = FindMetaTable("portui_Button")
+
+	local Knob = portui.Elements.Create("Button")
+	Knob:SetParent(self)
+	Knob:SetText("")
+	Knob:SetWidth(10)
+	Knob:SetHasInputEnabled(false)
+
+	function Knob:PaintBackground(RenderWidth, RenderHeight, Width, Height)
+		Base.PaintBackground(self, RenderWidth, RenderHeight, Width, Height)
+		ButtonBase.PaintBackground(self, RenderWidth, RenderHeight, Width, Height)
+	end
+
+	self.m_Knob = Knob
 end
 
 function ELEMENT:OnValueChanged(OldValue, NewValue)
@@ -28,6 +45,8 @@ function ELEMENT:SetValue(Value)
 	self.m_flValue = math.Clamp(math.Round(Value, self.m_iDecimalPoints), self.m_flMinimumValue, self.m_flMaximumValue)
 
 	self:OnValueChanged(OldValue, self.m_flValue)
+
+	self:InvalidateParent(true)
 end
 
 function ELEMENT:Think()
@@ -51,15 +70,7 @@ end
 function ELEMENT:PaintBackground() end
 
 function ELEMENT:PaintForeground(RenderWidth, RenderHeight)
-	local EdgeOffset = self:CalculatePixelsHeight(1)
-
-	local ValuePercentage = math.Remap(self.m_flValue, self.m_flMinimumValue, self.m_flMaximumValue, 0, 1)
-	local ValueX = RenderWidth * ValuePercentage
-
-	ValueX = math.Clamp(ValueX, 0, RenderWidth - EdgeOffset)
-
 	surface.SetDrawColor(0, 0, 0, 255)
-	surface.DrawLine(ValueX, 0, ValueX, RenderHeight)
 	surface.DrawLine(0, RenderHeight * 0.5, RenderWidth, RenderHeight * 0.5)
 end
 
@@ -68,6 +79,18 @@ function ELEMENT:OnLeftClick(MouseX)
 	-- self.m_DragData.MouseY = MouseY -- TODO: Vertical sliders
 
 	portui.Elements.Input.StartGrabbingInput(self)
+end
+
+function ELEMENT:PerformLayout(Width, Height)
+	if IsValid(self.m_Knob) then
+		local ValuePercentage = math.Remap(self.m_flValue, self.m_flMinimumValue, self.m_flMaximumValue, 0, 1)
+		local ValueX = Width * ValuePercentage
+
+		ValueX = math.Clamp(ValueX, 0, Width - self.m_Knob:GetWidth())
+
+		self.m_Knob:SetX(ValueX)
+		self.m_Knob:SetHeight(Height)
+	end
 end
 
 portui.Elements.Register("Slider", ELEMENT, "Base")
