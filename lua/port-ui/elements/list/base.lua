@@ -413,6 +413,8 @@ end
 
 function ELEMENT:InvalidateLayout()
 	if not self.m_bHasDirtyLayout then
+		self:UpdateDockingOffset(0, 0, 0, 0)
+
 		self.m_bHasDirtyLayout = true
 	end
 end
