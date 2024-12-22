@@ -348,6 +348,8 @@ function ELEMENT:SetX(X)
 
 	self.m_iX = tonumber(X) or 0
 
+	if OldX == self.m_iX then return end
+
 	self:OnPositionChanged(OldX, self.m_iY, self.m_iX, self.m_iY)
 end
 
@@ -355,6 +357,8 @@ function ELEMENT:SetY(Y)
 	local OldY = self.m_iY
 
 	self.m_iY = tonumber(Y) or 0
+
+	if OldY == self.m_iY then return end
 
 	self:OnPositionChanged(self.m_iX, OldY, self.m_iX, self.m_iY)
 end
@@ -365,6 +369,8 @@ function ELEMENT:SetPos(X, Y)
 	self.m_iX = tonumber(X) or 0
 	self.m_iY = tonumber(Y) or 0
 
+	if OldX == self.m_iX and OldY == self.m_iY then return end
+
 	self:OnPositionChanged(OldX, OldY, self.m_iX, self.m_iY)
 end
 
@@ -372,6 +378,8 @@ function ELEMENT:SetWidth(Width)
 	local OldWidth = self.m_iWidth
 
 	self.m_iWidth = tonumber(Width) or 0
+
+	if OldWidth == self.m_iWidth then return end
 
 	self:InvalidateLayout()
 	self:OnSizeChanged(OldWidth, self.m_iHeight, self.m_iWidth, self.m_iHeight)
@@ -381,6 +389,8 @@ function ELEMENT:SetHeight(Height)
 	local OldHeight = self.m_iHeight
 
 	self.m_iHeight = tonumber(Height) or 0
+
+	if OldHeight == self.m_iHeight then return end
 
 	self:InvalidateLayout()
 	self:OnSizeChanged(self.m_iWidth, OldHeight, self.m_iWidth, self.m_iHeight)
@@ -392,8 +402,31 @@ function ELEMENT:SetSize(Width, Height)
 	self.m_iWidth = tonumber(Width) or 0
 	self.m_iHeight = tonumber(Height) or 0
 
+	if OldWidth == self.m_iWidth and OldHeight == self.m_iHeight then return end
+
 	self:InvalidateLayout()
 	self:OnSizeChanged(OldWidth, OldHeight, self.m_iWidth, self.m_iHeight)
+end
+
+function ELEMENT:SizeToChildren(SizeWidth, SizeHeight)
+	local ChildrenWidth, ChildrenHeight = 0, 0
+
+	for ChildIndex = 1, #self.m_Children do
+		local Child = self.m_Children[ChildIndex]
+
+		ChildrenWidth = math.max(ChildrenWidth, Child:GetX() + Child:GetWidth())
+		ChildrenHeight = math.max(ChildrenHeight, Child:GetY() + Child:GetHeight())
+	end
+
+	if SizeWidth and SizeHeight then
+		self:SetSize(ChildrenWidth, ChildrenHeight)
+	else
+		if SizeWidth then
+			self:SetWidth(ChildrenWidth)
+		elseif SizeHeight then
+			self:SetHeight(ChildrenHeight)
+		end
+	end
 end
 
 function ELEMENT:SetVisible(Visible)
