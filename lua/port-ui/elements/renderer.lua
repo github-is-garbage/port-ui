@@ -153,7 +153,7 @@ function Renderer.RenderElement(Element, IsChild)
 	end
 	render_SetViewPort(0, 0, ScreenWidth, ScreenHeight)
 
-	Element:PostRenderChildren(ElementX, ElementY, ElementWidth, ElementHeight)
+	xpcall(Element.PostRenderChildren, ErrorNoHaltWithStack, Element, ElementX, ElementY, ElementWidth, ElementHeight)
 end
 
 function Renderer.RenderTopElements()
