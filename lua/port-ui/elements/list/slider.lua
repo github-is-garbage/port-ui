@@ -44,6 +44,8 @@ function ELEMENT:SetValue(Value)
 	local OldValue = self.m_flValue
 	self.m_flValue = math.Clamp(math.Round(Value, self.m_iDecimalPoints), self.m_flMinimumValue, self.m_flMaximumValue)
 
+	if self.m_flValue == OldValue then return end
+
 	self:OnValueChanged(OldValue, self.m_flValue)
 
 	self:InvalidateParent(true)
