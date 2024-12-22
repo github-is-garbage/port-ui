@@ -45,21 +45,21 @@ function Input.ClickElement(Element, MouseX, MouseY)
 	local RelativeMouseY = MouseY - ElementY
 
 	if Input.WasButtonJustPressed(MOUSE_LEFT) then
-		Element:OnLeftClick(RelativeMouseX, RelativeMouseY)
-
 		hook.Run("port-ui:ElementLeftClicked", Element, RelativeMouseX, RelativeMouseY)
+
+		Element:OnLeftClick(RelativeMouseX, RelativeMouseY)
 	end
 
 	if Input.WasButtonJustPressed(MOUSE_RIGHT) then
-		Element:OnRightClick(RelativeMouseX, RelativeMouseY)
-
 		hook.Run("port-ui:ElementRightClicked", Element, RelativeMouseX, RelativeMouseY)
+
+		Element:OnRightClick(RelativeMouseX, RelativeMouseY)
 	end
 
 	if Input.WasButtonJustPressed(MOUSE_MIDDLE) then
-		Element:OnMiddleClick(RelativeMouseX, RelativeMouseY)
-
 		hook.Run("port-ui:ElementMiddleClicked", Element, RelativeMouseX, RelativeMouseY)
+
+		Element:OnMiddleClick(RelativeMouseX, RelativeMouseY)
 	end
 end
 
