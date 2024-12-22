@@ -392,7 +392,7 @@ function ELEMENT:SetParent(Parent)
 end
 
 function ELEMENT:InvalidateLayout()
-	if not self:GetHasDirtyLayout() then
+	if not self.m_bHasDirtyLayout then
 		self.m_bHasDirtyLayout = true
 	end
 end
