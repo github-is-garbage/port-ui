@@ -23,11 +23,11 @@ function ELEMENT:Init()
 	CloseButton:SetText("X")
 	CloseButton:SetSize(self:GetTitleBarHeight() * 0.8, self:GetTitleBarHeight() * 0.8)
 
-	function CloseButton:PaintBackground(RenderWidth, RenderHeight)
+	function CloseButton:PaintBackground(RenderWidth, RenderHeight, Width, Height)
 		surface.SetDrawColor(255, 0, 0, 255)
 		surface.DrawRect(0, 0, RenderWidth, RenderHeight)
 
-		ButtonBase.PaintBackground(self, RenderWidth, RenderHeight, self:GetSize())
+		ButtonBase.PaintBackground(self, RenderWidth, RenderHeight, Width, Height)
 	end
 
 	function CloseButton:OnLeftClick()
