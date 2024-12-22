@@ -4,6 +4,10 @@ local ELEMENT = {}
 
 AccessorFunc(ELEMENT, "m_strText", "Text", FORCE_STRING)
 
+function ELEMENT:Init()
+	self:SetText("Button")
+end
+
 function ELEMENT:PaintBackground(RenderWidth, RenderHeight)
 	local WidthOffset = self:CalculatePixelsWidth(1)
 	local HeightOffset = self:CalculatePixelsHeight(1)
