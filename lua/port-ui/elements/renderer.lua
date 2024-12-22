@@ -96,6 +96,11 @@ function Renderer.RenderElement(Element, IsChild)
 	local ElementX, ElementY = Element:GetRelativePos()
 	local ElementWidth, ElementHeight = Element:GetSize()
 
+	if ElementWidth < 1 or ElementHeight < 1 then
+		-- Can't see any of it
+		return
+	end
+
 	if Element:GetHasInputEnabled() and Renderer.MouseInBounds(ElementX, ElementY, ElementX + ElementWidth, ElementY + ElementHeight) then
 		-- This is a bit of a bad way to get the hovered element because it means there can't be an :IsHovered function
 		Renderer.HoveredElement = Element
