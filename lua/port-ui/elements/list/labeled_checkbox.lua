@@ -1,5 +1,3 @@
-local Renderer = portui.Elements.Renderer
-
 local ELEMENT = {}
 
 function ELEMENT:Init()

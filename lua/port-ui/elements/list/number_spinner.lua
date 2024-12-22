@@ -1,5 +1,3 @@
-local Renderer = portui.Elements.Renderer
-
 local ELEMENT = {}
 
 AccessorFunc(ELEMENT, "m_flValue", "Value", FORCE_NUMBER)
