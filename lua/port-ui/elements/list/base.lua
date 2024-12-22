@@ -210,6 +210,7 @@ function ELEMENT:DoInternalLayout()
 				end
 
 				-- Update everyone
+				Parent:InvalidateLayout() -- Make sure the parent is aware of our new size
 				Parent:UpdateDockingOffset(OffsetLeft, OffsetRight, OffsetTop, OffsetBottom)
 
 				self:SetPos(X, Y)
