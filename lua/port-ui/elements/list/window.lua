@@ -2,18 +2,23 @@ local Renderer = portui.Elements.Renderer
 
 local ELEMENT = {}
 
-AccessorFunc(ELEMENT, "m_strTitle", "Title", FORCE_STRING)
 AccessorFunc(ELEMENT, "m_iTitleBarHeight", "TitleBarHeight", FORCE_NUMBER)
 AccessorFunc(ELEMENT, "m_bDraggable", "Draggable", FORCE_BOOL)
 
 function ELEMENT:Init()
 	self.m_DragData = {}
 
-	self:SetTitle("Window")
 	self:SetTitleBarHeight(20)
 	self:SetDraggable(true)
 
 	self:SetDockPadding(4, 4, self:GetTitleBarHeight() + 4, 4)
+
+	-- Title
+	local Title = portui.Elements.Create("Label")
+	Title:SetParent(self)
+	Title:SetText("Window")
+
+	self.m_Title = Title
 
 	-- Close Button
 	local ButtonBase = FindMetaTable("portui_Button")
@@ -37,6 +42,20 @@ function ELEMENT:Init()
 	end
 
 	self.m_CloseButton = CloseButton
+end
+
+function ELEMENT:GetTitle()
+	if IsValid(self.m_Title) then
+		return self.m_Title:GetText()
+	else
+		return ""
+	end
+end
+
+function ELEMENT:SetTitle(Title)
+	if IsValid(self.m_Title) then
+		self.m_Title:SetText(Title)
+	end
 end
 
 function ELEMENT:Think()
@@ -80,26 +99,6 @@ function ELEMENT:PaintForeground(RenderWidth, RenderHeight)
 	surface.DrawLine(RenderWidth, 0, RenderWidth, RenderHeight)
 	surface.DrawLine(RenderWidth, RenderHeight, 0, RenderHeight)
 	surface.DrawLine(0, RenderHeight, 0, 0)
-
-	-- Title
-	local Title = self:GetTitle()
-
-	if string.len(Title) > 0 then
-		Renderer.SwapPortRect() -- Absolutely rapes text rendering, can't fix that
-		do
-			local X, Y = self:GetRelativePos()
-
-			surface.SetFont(self:GetFontName())
-			surface.SetTextColor(255, 255, 255, 255)
-
-			local _, TextHeight = surface.GetTextSize(Title)
-			local TextOffset = (TitleBarHeight * 0.5) - (TextHeight * 0.5)
-
-			surface.SetTextPos(X + TextOffset + 3, Y + TextOffset)
-			surface.DrawText(Title)
-		end
-		Renderer.UnSwapPortRect()
-	end
 end
 
 function ELEMENT:OnLeftClick(MouseX, MouseY)
@@ -113,8 +112,16 @@ function ELEMENT:OnLeftClick(MouseX, MouseY)
 end
 
 function ELEMENT:PerformLayout(Width, Height)
+	local TitleBarHeight = self:GetTitleBarHeight()
+
+	if IsValid(self.m_Title) then
+		local TitleWidth, TitleHeight = self.m_Title:GetSize()
+
+		self.m_Title:SetY((TitleBarHeight * 0.5) - (TitleHeight * 0.5))
+		self.m_Title:SetX(self.m_Title:GetY() + 3) -- Little bump over
+	end
+
 	if IsValid(self.m_CloseButton) then
-		local TitleBarHeight = self:GetTitleBarHeight()
 		local CloseButtonWidth, CloseButtonHeight = self.m_CloseButton:GetSize()
 
 		self.m_CloseButton:SetY((TitleBarHeight * 0.5) - (CloseButtonHeight * 0.5))
