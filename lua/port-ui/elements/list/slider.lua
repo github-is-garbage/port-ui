@@ -19,7 +19,6 @@ end
 
 function ELEMENT:OnValueChanged(OldValue, NewValue)
 	-- For override
-	print(OldValue, NewValue)
 end
 
 function ELEMENT:SetValue(Value)
