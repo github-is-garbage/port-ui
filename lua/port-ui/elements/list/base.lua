@@ -306,7 +306,7 @@ function ELEMENT:AddChild(Child, Dock)
 	end
 
 	if not IsValid(Child) then
-		-- TODO: Error?
+		error("Got invalid Element in :AddChild!")
 		return
 	end
 
