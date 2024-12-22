@@ -17,6 +17,7 @@ function ELEMENT:Init()
 	local Title = portui.Elements.Create("Label")
 	Title:SetParent(self)
 	Title:SetText("Window")
+	Title:SetHasInputEnabled(false)
 
 	self.m_Title = Title
 
