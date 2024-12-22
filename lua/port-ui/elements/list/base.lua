@@ -417,6 +417,12 @@ function ELEMENT:InvalidateLayout()
 	end
 end
 
+function ELEMENT:InvalidateChildren()
+	for ChildIndex = 1, #self.m_Children do
+		self.m_Children[ChildIndex]:InvalidateLayout()
+	end
+end
+
 function ELEMENT:SetDock(Dock)
 	Dock = tonumber(Dock) or NODOCK
 
