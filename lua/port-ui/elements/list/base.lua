@@ -319,6 +319,19 @@ function ELEMENT:GetChildren()
 	return self.m_Children
 end
 
+function ELEMENT:CalculateChildrenSize()
+	local ChildrenWidth, ChildrenHeight = 0, 0
+
+	for ChildIndex = 1, #self.m_Children do
+		local Child = self.m_Children[ChildIndex]
+
+		ChildrenWidth = math.max(ChildrenWidth, Child:GetX() + Child:GetWidth())
+		ChildrenHeight = math.max(ChildrenHeight, Child:GetY() + Child:GetHeight())
+	end
+
+	return ChildrenWidth, ChildrenHeight
+end
+
 function ELEMENT:GetHasDirtyLayout()
 	return self.m_bHasDirtyLayout
 end
@@ -442,14 +455,7 @@ function ELEMENT:SetSize(Width, Height)
 end
 
 function ELEMENT:SizeToChildren(SizeWidth, SizeHeight)
-	local ChildrenWidth, ChildrenHeight = 0, 0
-
-	for ChildIndex = 1, #self.m_Children do
-		local Child = self.m_Children[ChildIndex]
-
-		ChildrenWidth = math.max(ChildrenWidth, Child:GetX() + Child:GetWidth())
-		ChildrenHeight = math.max(ChildrenHeight, Child:GetY() + Child:GetHeight())
-	end
+	local ChildrenWidth, ChildrenHeight = self:CalculateChildrenSize()
 
 	if SizeWidth and SizeHeight then
 		self:SetSize(ChildrenWidth, ChildrenHeight)
