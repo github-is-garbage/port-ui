@@ -14,6 +14,13 @@ function ELEMENT:SetText(Text)
 	self:InvalidateLayout()
 end
 
+function ELEMENT:GetTextSize()
+	surface.SetFont(self:GetFontName())
+	local TextWidth, TextHeight = surface.GetTextSize(self.m_strText)
+
+	return TextWidth + 2, TextHeight + 2 -- Pixel edges that don't get counted for some reason
+end
+
 function ELEMENT:PaintBackground() end
 
 function ELEMENT:PaintForeground()
@@ -34,10 +41,7 @@ function ELEMENT:PaintForeground()
 end
 
 function ELEMENT:PerformLayout()
-	surface.SetFont(self:GetFontName())
-	local TextWidth, TextHeight = surface.GetTextSize(self.m_strText)
-
-	self:SetSize(TextWidth + 2, TextHeight + 2) -- Pixel edges that don't get counted for some reason
+	self:SetSize(self:GetTextSize())
 end
 
 portui.Elements.Register("Label", ELEMENT, "Base")
