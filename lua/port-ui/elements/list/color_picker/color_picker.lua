@@ -38,7 +38,6 @@ end
 
 function ELEMENT:OnValueChanged(NewColor)
 	-- For override
-	print(NewColor)
 end
 
 function ELEMENT:GetColor()
