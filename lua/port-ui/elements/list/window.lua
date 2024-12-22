@@ -82,22 +82,24 @@ function ELEMENT:PaintForeground(RenderWidth, RenderHeight)
 	surface.DrawLine(0, RenderHeight, 0, 0)
 
 	-- Title
-	Renderer.SwapPortRect() -- Absolutely rapes text rendering, can't fix that
-	do
-		local X, Y = self:GetRelativePos()
+	local Title = self:GetTitle()
 
-		surface.SetFont(self:GetFontName())
-		surface.SetTextColor(255, 255, 255, 255)
+	if string.len(Title) > 0 then
+		Renderer.SwapPortRect() -- Absolutely rapes text rendering, can't fix that
+		do
+			local X, Y = self:GetRelativePos()
 
-		local Title = self:GetTitle()
+			surface.SetFont(self:GetFontName())
+			surface.SetTextColor(255, 255, 255, 255)
 
-		local _, TextHeight = surface.GetTextSize(Title)
-		local TextOffset = (TitleBarHeight * 0.5) - (TextHeight * 0.5)
+			local _, TextHeight = surface.GetTextSize(Title)
+			local TextOffset = (TitleBarHeight * 0.5) - (TextHeight * 0.5)
 
-		surface.SetTextPos(X + TextOffset + 3, Y + TextOffset)
-		surface.DrawText(Title)
+			surface.SetTextPos(X + TextOffset + 3, Y + TextOffset)
+			surface.DrawText(Title)
+		end
+		Renderer.UnSwapPortRect()
 	end
-	Renderer.UnSwapPortRect()
 end
 
 function ELEMENT:OnLeftClick(MouseX, MouseY)

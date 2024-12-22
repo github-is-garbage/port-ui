@@ -20,16 +20,20 @@ end
 function ELEMENT:PaintBackground() end
 
 function ELEMENT:PaintForeground()
-	Renderer.SwapPortRect()
-	do
-		local X, Y = self:GetRelativePos()
+	local Text = self:GetText()
 
-		surface.SetFont(self:GetFontName())
-		surface.SetTextColor(255, 255, 255, 255)
-		surface.SetTextPos(X + 1, Y + 1)
-		surface.DrawText(self:GetText())
+	if string.len(Text) > 0 then
+		Renderer.SwapPortRect()
+		do
+			local X, Y = self:GetRelativePos()
+
+			surface.SetFont(self:GetFontName())
+			surface.SetTextColor(255, 255, 255, 255)
+			surface.SetTextPos(X + 1, Y + 1)
+			surface.DrawText(Text)
+		end
+		Renderer.UnSwapPortRect()
 	end
-	Renderer.UnSwapPortRect()
 end
 
 portui.Elements.Register("Label", ELEMENT, "Base")

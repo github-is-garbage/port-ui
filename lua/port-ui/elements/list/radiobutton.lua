@@ -41,21 +41,24 @@ function ELEMENT:PaintBackground(RenderWidth, RenderHeight, Width, Height)
 end
 
 function ELEMENT:PaintForeground(RenderWidth, RenderHeight, Width, Height)
-	Renderer.SwapPortRect()
-	do
-		local X, Y = self:GetRelativePos()
-		local Radius = Height * 0.33
+	local Text = self:GetText()
 
-		surface.SetFont(self:GetFontName())
-		surface.SetTextColor(255, 255, 255, 255)
+	if string.len(Text) > 0 then
+		Renderer.SwapPortRect()
+		do
+			local X, Y = self:GetRelativePos()
+			local Radius = Height * 0.33
 
-		local Text = self:GetText()
-		local _, TextHeight = surface.GetTextSize(Text)
+			surface.SetFont(self:GetFontName())
+			surface.SetTextColor(255, 255, 255, 255)
 
-		surface.SetTextPos(X + (Radius * 2) + 3, Y + ((Height * 0.5) - (TextHeight * 0.5)))
-		surface.DrawText(Text)
+			local _, TextHeight = surface.GetTextSize(Text)
+
+			surface.SetTextPos(X + (Radius * 2) + 3, Y + ((Height * 0.5) - (TextHeight * 0.5)))
+			surface.DrawText(Text)
+		end
+		Renderer.UnSwapPortRect()
 	end
-	Renderer.UnSwapPortRect()
 end
 
 function ELEMENT:OnSelected()

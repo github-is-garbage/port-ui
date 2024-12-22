@@ -23,23 +23,27 @@ function ELEMENT:PaintBackground(RenderWidth, RenderHeight)
 end
 
 function ELEMENT:PaintForeground(RenderWidth, RenderHeight, Width, Height)
-	Renderer.SwapPortRect()
-	do
-		local X, Y = self:GetRelativePos()
+	local Text = self:GetText()
 
-		surface.SetFont(self:GetFontName())
-		surface.SetTextColor(255, 255, 255, 255)
+	if string.len(Text) > 0 then
+		Renderer.SwapPortRect()
+		do
+			local X, Y = self:GetRelativePos()
 
-		local Text = self:GetText()
-		local TextWidth, TextHeight = surface.GetTextSize(Text)
+			surface.SetFont(self:GetFontName())
+			surface.SetTextColor(255, 255, 255, 255)
 
-		local TextX = (Width * 0.5) - (TextWidth * 0.5)
-		local TextY = (Height * 0.5) - (TextHeight * 0.5)
+			local Text = self:GetText()
+			local TextWidth, TextHeight = surface.GetTextSize(Text)
 
-		surface.SetTextPos(X + TextX, Y + TextY)
-		surface.DrawText(Text)
+			local TextX = (Width * 0.5) - (TextWidth * 0.5)
+			local TextY = (Height * 0.5) - (TextHeight * 0.5)
+
+			surface.SetTextPos(X + TextX, Y + TextY)
+			surface.DrawText(Text)
+		end
+		Renderer.UnSwapPortRect()
 	end
-	Renderer.UnSwapPortRect()
 end
 
 portui.Elements.Register("Button", ELEMENT, "Base")
