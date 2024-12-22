@@ -39,6 +39,7 @@ Renderer.LastScissorState = false
 Renderer.MouseX = 0
 Renderer.MouseY = 0
 
+Renderer.CurrentlyRenderingElement = nil
 Renderer.HoveredElement = nil
 
 function Renderer.SwapPortRect() -- Flips the view port and scissor rect for proper clipped text rendering inside child elements
@@ -52,6 +53,19 @@ function Renderer.SwapPortRect() -- Flips the view port and scissor rect for pro
 
 	local ScissorW = Renderer.LastViewPortY + Renderer.LastViewPortHeight
 	ScissorW = math_Clamp(ScissorW, Renderer.LastViewPortY, Renderer.TopViewPortY + Renderer.TopViewPortHeight)
+
+	if IsValid(Renderer.CurrentlyRenderingElement) then
+		local Parent = Renderer.CurrentlyRenderingElement:GetParent()
+
+		if IsValid(Parent) then
+			-- Prevent escaping parent
+			local ParentX, ParentY = Parent:GetRelativePos()
+			local ParentWidth, ParentHeight = Parent:GetSize()
+
+			ScissorZ = math_Clamp(ScissorZ, ParentX, ParentX + ParentWidth)
+			ScissorW = math_Clamp(ScissorW, ParentY, ParentY + ParentHeight)
+		end
+	end
 
 	render_SetScissorRect(Renderer.LastViewPortX, Renderer.LastViewPortY, ScissorZ, ScissorW, true)
 end
@@ -69,6 +83,8 @@ function Renderer.RenderElement(Element, IsChild)
 	if not Element:GetVisible() then
 		return
 	end
+
+	Renderer.CurrentlyRenderingElement = Element
 
 	if Element:GetHasDirtyLayout() then
 		Element:DoInternalLayout()
@@ -177,6 +193,7 @@ function Renderer.RenderElements()
 	Renderer.ScreenHeight = ScrH()
 	Renderer.MouseX = gui_MouseX()
 	Renderer.MouseY = gui_MouseY()
+	Renderer.CurrentlyRenderingElement = nil
 	Renderer.HoveredElement = nil
 
 	Renderer.RenderTopElements()
