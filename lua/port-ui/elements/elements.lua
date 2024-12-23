@@ -66,7 +66,7 @@ function Elements.UnStore(Element)
 	for Index = #Elements.List, 1, -1 do
 		if Elements.List[Index] == Element then
 			ElementIndex = Index
-			Elements.List[Index] = nil
+			table.remove(Elements.List, Index)
 
 			break
 		end
@@ -89,7 +89,8 @@ function Elements.UnStore(Element)
 
 	for Index = #SequentialList, 1, -1 do
 		if SequentialList[Index] == Element then
-			SequentialList[Index] = nil
+			table.remove(SequentialList, Index)
+
 			break
 		end
 	end
