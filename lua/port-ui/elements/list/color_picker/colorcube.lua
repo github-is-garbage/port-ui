@@ -3,11 +3,15 @@ local Renderer = portui.Elements.Renderer
 local ELEMENT = {}
 
 AccessorFunc(ELEMENT, "m_Color", "Color", FORCE_COLOR)
+AccessorFunc(ELEMENT, "m_ClickX", "ClickX", FORCE_NUMBER)
+AccessorFunc(ELEMENT, "m_ClickY", "ClickY", FORCE_NUMBER)
 
 function ELEMENT:Init()
 	self.m_DragData = {}
 
 	self:SetColor(Color(255, 255, 255, 255))
+	self:SetClickX(0)
+	self:SetClickY(0) -- TODO: Sync these better in ColorPicker
 
 	self.m_matRight = Material("vgui/gradient-r")
 	self.m_matDown = Material("vgui/gradient-d")
@@ -24,6 +28,9 @@ function ELEMENT:OnValueChanged(NewColor)
 end
 
 function ELEMENT:UpdateColor(X, Y)
+	self:SetClickX(X)
+	self:SetClickY(Y)
+
 	X = math.Remap(X, 0, self:GetWidth(), 0, 1)
 	Y = math.Remap(Y, 0, self:GetHeight(), 0, 1)
 
@@ -77,6 +84,26 @@ function ELEMENT:PaintBackground(RenderWidth, RenderHeight)
 	surface.SetDrawColor(0, 0, 0, 255)
 	surface.SetMaterial(self.m_matDown)
 	surface.DrawTexturedRect(0, 0, RenderWidth, RenderHeight)
+end
+
+function ELEMENT:PaintForeground(RenderWidth, RenderHeight, Width, Height)
+	local WidthOffset = self:CalculatePixelsWidth(1)
+	local HeightOffset = self:CalculatePixelsHeight(1)
+
+	RenderWidth = RenderWidth - WidthOffset
+	RenderHeight = RenderHeight - HeightOffset
+
+	surface.SetDrawColor(0, 0, 0, 255)
+	surface.DrawLine(0, 0, RenderWidth, 0)
+	surface.DrawLine(RenderWidth, 0, RenderWidth, RenderHeight)
+	surface.DrawLine(RenderWidth, RenderHeight, 0, RenderHeight)
+	surface.DrawLine(0, RenderHeight, 0, 0)
+
+	local ClickX = self:CalculatePixelsWidth(self:GetClickX())
+	local ClickY = self:CalculatePixelsHeight(self:GetClickY())
+
+	surface.DrawLine(0, ClickY, RenderWidth, ClickY)
+	surface.DrawLine(ClickX, 0, ClickX, RenderHeight)
 end
 
 function ELEMENT:OnLeftClick(MouseX, MouseY)

@@ -46,6 +46,9 @@ function ELEMENT:PaintForeground(RenderWidth, RenderHeight)
 	surface.DrawLine(RenderWidth, 0, RenderWidth, RenderHeight)
 	surface.DrawLine(RenderWidth, RenderHeight, 0, RenderHeight)
 	surface.DrawLine(0, RenderHeight, 0, 0)
+
+	local ValueY = math.Remap(self:GetValue(), self:GetMinimumValue(), self:GetMaximumValue(), 0, RenderHeight)
+	surface.DrawLine(0, ValueY, RenderWidth, ValueY)
 end
 
 portui.Elements.Register("AlphaBar", ELEMENT, "Slider")
