@@ -31,3 +31,5 @@ will be clipped due to DirectX clipping, I'm unable to remedy this with DisableC
 This has been remedied by the implementation of the `portui.Elements.Renderer.SwapPortRect()` and `portui.Elements.Renderer.UnSwapPortRect()` functions
 
 - Docking may be a bit "flickery" because of an incomplete implementation
+
+- Some of the color picker elements don't fully sync/communicate with each other properly on value change
