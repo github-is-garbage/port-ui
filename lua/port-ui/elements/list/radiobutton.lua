@@ -7,6 +7,7 @@ AccessorFunc(ELEMENT, "m_bSelected", "Selected", FORCE_BOOL)
 AccessorFunc(ELEMENT, "m_strGroupName", "GroupName", FORCE_STRING)
 
 function ELEMENT:Init()
+	self:SetText("Radio Button")
 	self:SetGroupName(tostring({})) -- Random default group
 
 	hook.Add("port-ui:RadioButtonGroupMemberChanged", self, self.OnGroupMemberChanged)
