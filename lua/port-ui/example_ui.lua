@@ -1,150 +1,93 @@
-local ExamplePanel = portui.Elements.Create("Window")
-ExamplePanel:SetPos(10, 10)
-ExamplePanel:SetSize(720, 480)
+local Window = portui.Elements.Create("Window")
+Window:SetPos(10, 10)
+Window:SetSize(720, 480)
 
--- ExamplePanel:AddChild("Button", TOP):SetText("1!")
--- ExamplePanel:AddChild("Button", BOTTOM):SetText("2@")
--- ExamplePanel:AddChild("Button", LEFT):SetText("3#")
--- ExamplePanel:AddChild("Button", RIGHT):SetText("4$")
--- ExamplePanel:AddChild("Button", FILL):SetText("5%")
+-- Buttons
+local ButtonA = Window:AddChild("Button")
+ButtonA:SetPos(4, 24)
+ButtonA:SetSize(100, 24)
 
-local Slider = portui.Elements.Create("Slider")
-Slider:SetParent(ExamplePanel)
-Slider:SetPos(4, 24)
-Slider:SetDock(TOP)
-Slider:SetSize(100, 20)
-Slider:SetMinimumValue(-1)
-
-function Slider:OnValueChanged(...)
-	print(...)
+function ButtonA:OnLeftClick()
+	print("Hello Hello")
 end
 
-local Checker = portui.Elements.Create("Checkbox")
-Checker:SetParent(ExamplePanel)
-Checker:SetSize(20, 20)
-Checker:SetPos(4, 50)
+-- Radio Buttons
+local RadioButtonA = Window:AddChild("RadioButton")
+RadioButtonA:SetPos(4, 50)
+RadioButtonA:SetSize(100, 20)
+RadioButtonA:SetSelected(true)
+RadioButtonA:SetText("Radio A")
+RadioButtonA:SetGroupName("Example Radio Buttons")
 
-function Checker:OnValueChanged(...)
-	print(...)
+function RadioButtonA:OnSelected()
+	print("A Selected")
 end
 
-local Checker2 = portui.Elements.Create("LabeledCheckbox")
-Checker2:SetParent(ExamplePanel)
-Checker2:SetSize(100, 20)
-Checker2:SetPos(4, 80)
-
-function Checker2:OnValueChanged(...)
-	print(...)
+function RadioButtonA:OnUnSelected()
+	print("A unselected")
 end
 
-local Spinner = portui.Elements.Create("NumberSpinner")
-Spinner:SetParent(ExamplePanel)
-Spinner:SetSize(100, 20)
-Spinner:SetPos(4, 110)
+local RadioButtonB = Window:AddChild("RadioButton")
+RadioButtonB:SetPos(4, 70)
+RadioButtonB:SetSize(100, 20)
+RadioButtonB:SetText("Radio B")
+RadioButtonB:SetGroupName("Example Radio Buttons")
 
-function Spinner:OnValueChanged(...)
-	print(...)
+-- Checkbox
+local Checkbox = Window:AddChild("Checkbox")
+Checkbox:SetPos(4, 90)
+Checkbox:SetSize(20, 20)
+
+function Checkbox:OnValueChanged(Old, New)
+	print(Old, New)
 end
 
-local TestColor = Color(255, 0, 0, 255)
+-- Checkbox with a clickable label
+local LabeledCheckbox = Window:AddChild("LabeledCheckbox")
+LabeledCheckbox:SetPos(4, 120)
+LabeledCheckbox:SetSize(120, 20)
+LabeledCheckbox:SetText("Labeled Fella")
 
-local Colorbox = portui.Elements.Create("Colorbox")
-Colorbox:SetParent(ExamplePanel)
-Colorbox:SetSize(20, 20)
-Colorbox:SetPos(4, 140)
-Colorbox:SetColor(TestColor)
-
-function Colorbox:OnValueChanged(...)
-	print(...)
+function LabeledCheckbox:OnValueChanged(Old, New)
+	print(Old, New)
 end
 
--- local ColorPicker = portui.Elements.Create("ColorPicker")
--- ColorPicker:SetParent(ExamplePanel)
--- ColorPicker:SetSize(150, 100)
--- ColorPicker:SetPos(4, 170)
--- ColorPicker:SetColor(TestColor)
+-- Sliders
+local HSlider = Window:AddChild("Slider")
+HSlider:SetPos(4, 150)
+HSlider:SetSize(100, 20)
+HSlider:SetMinimumValue(-1)
+HSlider:SetDecimalPoints(2)
 
-local VSlider = portui.Elements.Create("Slider")
-VSlider:SetVertical(true)
-VSlider:SetParent(ExamplePanel)
+function HSlider:OnValueChanged(Old, New)
+	print(Old, New)
+end
+
+local VSlider = Window:AddChild("Slider")
+VSlider:SetVertical(true) -- Up = lower, Down = higher
+VSlider:SetPos(4, 180)
 VSlider:SetSize(20, 100)
-VSlider:SetPos(4, 280)
-VSlider:SetMinimumValue(-1)
 
-function VSlider:OnValueChanged(...)
-	print(...)
+function VSlider:OnValueChanged(Old, New)
+	print(Old, New)
 end
 
--- local Label = portui.Elements.Create("Label")
--- Label:SetPos(10, 20)
--- Label:SetText("Hello There")
--- Label:SetParent(ExamplePanel)
--- Label:SetDock(FILL)
+-- Spinner
+local Spinner = Window:AddChild("NumberSpinner")
+Spinner:SetPos(4, 290)
+Spinner:SetSize(100, 20)
+Spinner:SetMinimumValue(-1)
+Spinner:SetDecimalPoints(2)
+Spinner:SetStep(0.5)
 
--- local Button1 = portui.Elements.Create("Button")
--- Button1:SetPos(10, 50)
--- Button1:SetSize(100, 20)
--- Button1:SetText("1!")
--- Button1:SetParent(ExamplePanel)
--- --Button1:SetDock(TOP)
+function Spinner:OnValueChanged(Old, New)
+	print(Old, New)
+end
 
--- function Button1:OnLeftClick()
--- 	ExamplePanel:Remove()
--- end
+-- Colors
+local ColorRef = Color(255, 0, 0, 255)
 
--- --function Button1:PaintBackground() end
-
--- local Button2 = portui.Elements.Create("Button")
--- Button2:SetText("2@")
--- Button2:SetParent(ExamplePanel)
--- Button2:SetDock(BOTTOM)
-
--- --function Button2:PaintBackground() end
-
--- local Button3 = portui.Elements.Create("Button")
--- Button3:SetText("3#")
--- Button3:SetParent(ExamplePanel)
--- Button3:SetDock(LEFT)
-
--- --function Button3:PaintBackground() end
-
--- local Button4 = portui.Elements.Create("Button")
--- Button4:SetText("4$")
--- Button4:SetParent(ExamplePanel)
--- Button4:SetDock(RIGHT)
-
--- local Button5 = portui.Elements.Create("Button")
--- Button5:SetText("5%")
--- Button5:SetParent(ExamplePanel)
--- Button5:SetDock(FILL)
-
--- local RadioButtonA = portui.Elements.Create("RadioButton")
--- RadioButtonA:SetPos(10, 40)
--- RadioButtonA:SetSize(80, 20)
--- RadioButtonA:SetText("Radio A")
--- RadioButtonA:SetGroupName("Tester")
--- RadioButtonA:SetSelected(true)
--- RadioButtonA:SetParent(ExamplePanel)
-
--- function RadioButtonA:OnSelected()
--- 	print("A SELECTED")
--- end
-
--- function RadioButtonA:OnUnSelected()
--- 	print("A UNSELECTED")
--- end
-
--- local RadioButtonB = portui.Elements.Create("RadioButton")
--- RadioButtonB:SetPos(10, 60)
--- RadioButtonB:SetSize(80, 20)
--- RadioButtonB:SetText("Radio B")
--- RadioButtonB:SetGroupName("Tester")
--- RadioButtonB:SetParent(ExamplePanel)
-
--- function RadioButtonB:OnSelected()
--- 	print("B SELECTED")
--- end
-
--- function RadioButtonB:OnUnSelected()
--- 	print("B UNSELECTED")
--- end
+local Colorbox = Window:AddChild("Colorbox")
+Colorbox:SetPos(4, 330)
+Colorbox:SetSize(20, 20)
+Colorbox:SetColor(ColorRef) -- Passed by reference, will modify the variable passed in
