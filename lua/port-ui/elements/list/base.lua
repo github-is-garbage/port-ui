@@ -57,6 +57,7 @@ end
 
 function ELEMENT:Init()
 	-- For override
+	self:SetDockPadding(4, 4, 4, 4)
 end
 
 function ELEMENT:Think() -- Called BEFORE painting

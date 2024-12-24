@@ -91,3 +91,12 @@ local Colorbox = Window:AddChild("Colorbox")
 Colorbox:SetPos(4, 330)
 Colorbox:SetSize(20, 20)
 Colorbox:SetColor(ColorRef) -- Passed by reference, will modify the variable passed in
+
+
+local Window2 = portui.Elements.Create("Window")
+Window2:SetPos(600, 10)
+Window2:SetSize(720, 480)
+
+local TestBox = Window2:AddChild("Base", TOP)
+
+local Thing = TestBox:AddChild("Button", TOP)
