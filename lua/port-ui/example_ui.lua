@@ -3,18 +3,16 @@ Window:SetPos(10, 10)
 Window:SetSize(720, 480)
 
 -- Buttons
-local ButtonA = Window:AddChild("Button")
-ButtonA:SetPos(4, 24)
-ButtonA:SetSize(100, 24)
+local ButtonA = Window:AddChild("Button", TOP)
+ButtonA:SetHeight(24)
 
 function ButtonA:OnLeftClick()
 	print("Hello Hello")
 end
 
 -- Radio Buttons
-local RadioButtonA = Window:AddChild("RadioButton")
-RadioButtonA:SetPos(4, 50)
-RadioButtonA:SetSize(100, 20)
+local RadioButtonA = Window:AddChild("RadioButton", TOP)
+RadioButtonA:SetHeight(20)
 RadioButtonA:SetSelected(true)
 RadioButtonA:SetText("Radio A")
 RadioButtonA:SetGroupName("Example Radio Buttons")
@@ -27,25 +25,22 @@ function RadioButtonA:OnUnSelected()
 	print("A unselected")
 end
 
-local RadioButtonB = Window:AddChild("RadioButton")
-RadioButtonB:SetPos(4, 70)
-RadioButtonB:SetSize(100, 20)
+local RadioButtonB = Window:AddChild("RadioButton", TOP)
+RadioButtonB:SetHeight(20)
 RadioButtonB:SetText("Radio B")
 RadioButtonB:SetGroupName("Example Radio Buttons")
 
 -- Checkbox
-local Checkbox = Window:AddChild("Checkbox")
-Checkbox:SetPos(4, 90)
-Checkbox:SetSize(20, 20)
+local Checkbox = Window:AddChild("Checkbox", TOP)
+Checkbox:SetHeight(20)
 
 function Checkbox:OnValueChanged(Old, New)
 	print(Old, New)
 end
 
 -- Checkbox with a clickable label
-local LabeledCheckbox = Window:AddChild("LabeledCheckbox")
-LabeledCheckbox:SetPos(4, 120)
-LabeledCheckbox:SetSize(120, 20)
+local LabeledCheckbox = Window:AddChild("LabeledCheckbox", TOP)
+LabeledCheckbox:SetHeight(20)
 LabeledCheckbox:SetText("Labeled Fella")
 
 function LabeledCheckbox:OnValueChanged(Old, New)
@@ -53,9 +48,8 @@ function LabeledCheckbox:OnValueChanged(Old, New)
 end
 
 -- Sliders
-local HSlider = Window:AddChild("Slider")
-HSlider:SetPos(4, 150)
-HSlider:SetSize(100, 20)
+local HSlider = Window:AddChild("Slider", TOP)
+HSlider:SetHeight(20)
 HSlider:SetMinimumValue(-1)
 HSlider:SetDecimalPoints(2)
 
@@ -63,19 +57,21 @@ function HSlider:OnValueChanged(Old, New)
 	print(Old, New)
 end
 
-local VSlider = Window:AddChild("Slider")
+local VHolder = Window:AddChild("Base", TOP) -- VSliders don't dock to the top very nicely
+VHolder:SetHeight(108)
+
+local VSlider = VHolder:AddChild("Slider")
 VSlider:SetVertical(true) -- Up = lower, Down = higher
-VSlider:SetPos(4, 180)
 VSlider:SetSize(20, 100)
+VSlider:SetPos(4, 4)
 
 function VSlider:OnValueChanged(Old, New)
 	print(Old, New)
 end
 
 -- Spinner
-local Spinner = Window:AddChild("NumberSpinner")
-Spinner:SetPos(4, 290)
-Spinner:SetSize(100, 20)
+local Spinner = Window:AddChild("NumberSpinner", TOP)
+Spinner:SetHeight(20)
 Spinner:SetMinimumValue(-1)
 Spinner:SetDecimalPoints(2)
 Spinner:SetStep(0.5)
@@ -87,24 +83,6 @@ end
 -- Colors
 local ColorRef = Color(255, 0, 0, 255)
 
-local Colorbox = Window:AddChild("Colorbox")
-Colorbox:SetPos(4, 330)
+local Colorbox = Window:AddChild("Colorbox", TOP)
 Colorbox:SetSize(20, 20)
 Colorbox:SetColor(ColorRef) -- Passed by reference, will modify the variable passed in
-
-
-local Window2 = portui.Elements.Create("Window")
-Window2:SetPos(600, 10)
-Window2:SetSize(720, 480)
-
-local Flipout2 = Window2:AddChild("Slider", TOP)
-
-local Thing = Window2:AddChild("Button", TOP)
-
-local TestBox = Window2:AddChild("Base", TOP)
-
-local Flipout = TestBox:AddChild("RadioButton", TOP)
-
--- local TestBox2 = TestBox:AddChild("Base", TOP)
-
--- local Flipout3 = TestBox2:AddChild("RadioButton", TOP)
