@@ -182,7 +182,7 @@ function ELEMENT:LayoutChild(Child)
 			X = PaddingLeft + OffsetLeft + MarginLeft
 			Y = PaddingTop + OffsetTop + MarginTop
 
-			Width = ParentWidth - ((PaddingLeft + PaddingRight) + (OffsetLeft + OffsetRight) + (MarginTop + MarginBottom))
+			Width = ParentWidth - ((PaddingLeft + PaddingRight) + (OffsetLeft + OffsetRight) + (MarginLeft + MarginRight))
 
 			OffsetTop = OffsetTop + Height + MarginBottom
 		elseif Dock == BOTTOM then
@@ -193,7 +193,7 @@ function ELEMENT:LayoutChild(Child)
 			X = PaddingLeft + OffsetLeft + MarginLeft
 			Y = ParentHeight - ((PaddingBottom + OffsetBottom + MarginTop) + Height)
 
-			Width = ParentWidth - ((PaddingLeft + PaddingRight) + (OffsetLeft + OffsetRight) + (MarginTop + MarginBottom))
+			Width = ParentWidth - ((PaddingLeft + PaddingRight) + (OffsetLeft + OffsetRight) + (MarginLeft + MarginRight))
 
 			OffsetBottom = OffsetBottom + Height + MarginTop
 		end
