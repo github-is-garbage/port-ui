@@ -26,7 +26,7 @@ end
 
 function ELEMENT:PaintBackground() end
 
-function ELEMENT:PaintForeground()
+function ELEMENT:PaintForeground(RenderWidth, RenderHeight, Width, Height)
 	local Text = self:GetText()
 
 	if string.len(Text) > 0 then
@@ -36,7 +36,7 @@ function ELEMENT:PaintForeground()
 
 			surface.SetFont(self:GetFontName())
 			surface.SetTextColor(255, 255, 255, 255)
-			surface.SetTextPos(X + 1, Y + 1)
+			surface.SetTextPos(X + 1, Y + (Height * 0.15)) -- 0.15 because the Label's size is the text size
 			surface.DrawText(Text)
 		end
 		Renderer.UnSwapPortRect()
@@ -44,7 +44,9 @@ function ELEMENT:PaintForeground()
 end
 
 function ELEMENT:PerformLayout()
-	self:SetSize(self:GetTextSize())
+	if self:GetDock() == NODOCK then
+		self:SetSize(self:GetTextSize())
+	end
 end
 
 portui.Elements.Register("Label", ELEMENT, "Base")
