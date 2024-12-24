@@ -37,6 +37,14 @@ function Elements.Register(Name, Meta, BaseName)
 	RegisterMetaTable("portui_" .. Name, Meta)
 end
 
+function Elements.GetAll()
+	return Elements.List
+end
+
+function Elements.GetByTypeName(Name)
+	return Elements.KeyedList[Name]
+end
+
 -- TODO: Check if element was already stored
 function Elements.Store(Element)
 	local TypeName = Element.m_strTypeName
