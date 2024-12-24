@@ -32,5 +32,5 @@ This has been remedied by the implementation of the `portui.Elements.Renderer.Sw
 
 - Docking may be a bit "flickery" because of an incomplete implementation
 
-- Some of the color picker elements don't fully sync/communicate with each other properly on value change
+- Some of the color picker elements don't fully sync/communicate with each other properly on value change.
 How these elements communicate values with each other will need partially reworked
