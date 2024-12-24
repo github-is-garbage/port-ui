@@ -1,9 +1,8 @@
 local ELEMENT = {}
 
--- TODO: Fix incomplete sync between alpha bar and the rest
+-- TODO: Fix bars and cube handles not initializing correctly
 function ELEMENT:Init()
 	self.m_matColors = Material("port-ui/colors.png")
-	print(file.Exists("materials/port-ui/colors.png", "GAME"))
 
 	self.m_ColorCube = self:AddChild("ColorCube", LEFT)
 
@@ -17,10 +16,14 @@ function ELEMENT:Init()
 	self.m_ColorBar:SetMaximumValue(255)
 
 	function self.m_ColorBar:OnValueChanged(OldValue, NewValue)
-		local BarColor = self:GetBarColor()
+		local NewColor = self:GetBarColor()
 
-		self:GetParent().m_ColorCube:SetColor(BarColor) -- Keep this fella in sync
-		self:GetParent():UpdateColor(BarColor)
+		-- Keep our friends in sync
+		self:GetParent().m_AlphaBar:SetColor(NewColor)
+		self:GetParent().m_AlphaBar:UpdateColor(NewColor)
+		self:GetParent().m_ColorCube:SetColor(NewColor)
+
+		self:GetParent():UpdateColor(NewColor)
 	end
 
 	self.m_AlphaBar = self:AddChild("AlphaBar", RIGHT)
@@ -29,11 +32,13 @@ function ELEMENT:Init()
 	self.m_AlphaBar:SetMaximumValue(255)
 
 	function self.m_AlphaBar:OnValueChanged(OldValue, NewValue)
-		local CurrentColor = self:GetParent():GetColor()
-		CurrentColor.a = self:GetMaximumValue() - NewValue -- Inverse
+		local NewColor = self:GetParent():GetColor()
 
-		self:GetParent().m_ColorCube:SetColor(CurrentColor) -- Keep this fella in sync
-		self:GetParent():UpdateColor(CurrentColor)
+		self:GetParent().m_AlphaBar:SetColor(NewColor)
+		self:GetParent().m_AlphaBar:UpdateColor(NewColor)
+		self:GetParent().m_ColorCube:SetColor(NewColor)
+
+		self:GetParent():UpdateColor(NewColor)
 	end
 
 	self.m_Color = Color(255, 255, 255, 255) -- Make sure the cube and bar is valid before calling

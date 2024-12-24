@@ -9,9 +9,8 @@ AccessorFunc(ELEMENT, "m_ClickY", "ClickY", FORCE_NUMBER)
 function ELEMENT:Init()
 	self.m_DragData = {}
 
-	self:SetColor(Color(255, 255, 255, 255))
-	self:SetClickX(0)
-	self:SetClickY(0) -- TODO: Sync these better in ColorPicker
+	self.m_Color = Color(255, 255, 255, 255)
+	self.m_BaseColor = Color(255, 255, 255, 255)
 
 	self.m_matRight = Material("vgui/gradient-r")
 	self.m_matDown = Material("vgui/gradient-d")
@@ -21,6 +20,29 @@ function ELEMENT:SetColor(RealColor)
 	self.m_Color = RealColor
 
 	self.m_BaseColor = HSVToColor(ColorToHSV(RealColor), 1, 1)
+
+	local NewColor
+	local X, Y = self:GetClickX(), self:GetClickY()
+
+	if not X or not Y then
+		self:SetClickX(0)
+		self:SetClickY(0)
+
+		NewColor = Color(RealColor.r, RealColor.g, RealColor.b, RealColor.a)
+	else
+		X = math.Remap(X, 0, self:GetWidth(), 0, 1)
+		Y = math.Remap(Y, 0, self:GetHeight(), 0, 1)
+
+		local Hue = ColorToHSV(self.m_BaseColor)
+		local Saturation = 1 - X
+		local Value = 1 - Y
+
+		NewColor = HSVToColor(Hue, Saturation, Value)
+	end
+
+	self.m_Color.r = NewColor.r
+	self.m_Color.g = NewColor.g
+	self.m_Color.b = NewColor.b
 end
 
 function ELEMENT:OnValueChanged(NewColor)
@@ -31,22 +53,7 @@ function ELEMENT:UpdateColor(X, Y)
 	self:SetClickX(X)
 	self:SetClickY(Y)
 
-	X = math.Remap(X, 0, self:GetWidth(), 0, 1)
-	Y = math.Remap(Y, 0, self:GetHeight(), 0, 1)
-
-	local Hue = ColorToHSV(self.m_BaseColor)
-	local Saturation = 1 - X
-	local Value = 1 - Y
-
-	local NewColor = HSVToColor(Hue, Saturation, Value)
-
-	-- Don't update base color
-	self.m_Color.r = NewColor.r
-	self.m_Color.g = NewColor.g
-	self.m_Color.b = NewColor.b
-	self.m_Color.a = NewColor.a
-
-	self:OnValueChanged(self:GetColor())
+	self:SetColor(self:GetColor())
 end
 
 function ELEMENT:Think()
@@ -71,6 +78,7 @@ function ELEMENT:Think()
 	ClickY = math.Clamp(ClickY, 0, self:GetHeight())
 
 	self:UpdateColor(ClickX, ClickY)
+	self:OnValueChanged(self:GetColor())
 end
 
 function ELEMENT:PaintBackground(RenderWidth, RenderHeight)

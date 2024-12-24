@@ -89,7 +89,7 @@ function Spinner:OnValueChanged(Old, New)
 end
 
 -- Colors
-local ColorRef = Color(255, 0, 0, 255)
+local ColorRef = Color(144, 67, 67, 200)
 
 local Colorbox = Window:AddChild("Colorbox", TOP)
 Colorbox:SetSize(20, 20)

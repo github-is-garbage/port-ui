@@ -23,6 +23,14 @@ function ELEMENT:SetMaterial(Path)
 	self.m_Material = Material(Path)
 end
 
+function ELEMENT:SetColor(Color)
+	self.m_Color = Color
+end
+
+function ELEMENT:UpdateColor(Color)
+	Color.a = self:GetMaximumValue() - self:GetValue()
+end
+
 function ELEMENT:PaintBackground(RenderWidth, RenderHeight)
 	surface.SetDrawColor(255, 255, 255, 255)
 	surface.SetMaterial(self:GetMaterial())
