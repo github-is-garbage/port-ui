@@ -97,6 +97,14 @@ local Window2 = portui.Elements.Create("Window")
 Window2:SetPos(600, 10)
 Window2:SetSize(720, 480)
 
+local Flipout2 = Window2:AddChild("Slider", TOP)
+
+local Thing = Window2:AddChild("Button", TOP)
+
 local TestBox = Window2:AddChild("Base", TOP)
 
-local Thing = TestBox:AddChild("Button", TOP)
+local Flipout = TestBox:AddChild("RadioButton", TOP)
+
+-- local TestBox2 = TestBox:AddChild("Base", TOP)
+
+-- local Flipout3 = TestBox2:AddChild("RadioButton", TOP)

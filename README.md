@@ -30,7 +30,5 @@ will be clipped due to DirectX clipping, I'm unable to remedy this with DisableC
 - Text rendering is weird inside Elements because of the View Ports due to how the View Ports mess with aspect ratio.
 This has been remedied by the implementation of the `portui.Elements.Renderer.SwapPortRect()` and `portui.Elements.Renderer.UnSwapPortRect()` functions
 
-- Docking may be a bit "flickery" because of an incomplete implementation
-
 - Some of the color picker elements don't fully sync/communicate with each other properly on value change.
 How these elements communicate values with each other will need partially reworked
