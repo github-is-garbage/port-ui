@@ -2,6 +2,7 @@ local ELEMENT = {}
 
 function ELEMENT:Init()
 	self.m_Checkbox = self:AddChild("Checkbox", LEFT)
+	self.m_Checkbox:SetDockMargin(0, 4, 0, 0)
 
 	function self.m_Checkbox:OnValueChanged(OldValue, NewValue)
 		-- Passthrough

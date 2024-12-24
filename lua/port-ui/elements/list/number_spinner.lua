@@ -17,6 +17,7 @@ function ELEMENT:Init()
 	-- Decrease
 	self.m_Decrease = self:AddChild("Button", LEFT)
 	self.m_Decrease:SetText("-")
+	self.m_Decrease:SetDockMargin(0, 4, 0, 0)
 
 	function self.m_Decrease:OnLeftClick()
 		local Parent = self:GetParent()
