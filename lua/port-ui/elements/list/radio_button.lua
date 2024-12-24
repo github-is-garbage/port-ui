@@ -35,7 +35,9 @@ function ELEMENT:PaintBackground(RenderWidth, RenderHeight, Width, Height)
 
 		if self:GetSelected() then
 			-- Because polygons suck and can't have rendertargets in menu state
-			surface.DrawCircle(X + Radius, Y + (Height * 0.5), Radius * 0.5, 0, 0, 0, 255)
+			for FillRadius = 1, Radius * 0.5 do
+				surface.DrawCircle(X + Radius, Y + (Height * 0.5), FillRadius, 0, 0, 0, 255)
+			end
 		end
 	end
 	Renderer.UnSwapPortRect()
