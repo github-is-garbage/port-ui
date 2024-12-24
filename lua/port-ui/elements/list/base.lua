@@ -53,6 +53,11 @@ function ELEMENT:InternalInit()
 	self.m_iDockPaddingRight = 0
 	self.m_iDockPaddingTop = 0
 	self.m_iDockPaddingBottom = 0
+
+	self.m_iDockMarginLeft = 0
+	self.m_iDockMarginRight = 0
+	self.m_iDockMarginTop = 0
+	self.m_iDockMarginBottom = 0
 end
 
 function ELEMENT:Init()
@@ -117,96 +122,97 @@ function ELEMENT:LayoutChild(Child)
 		local Width, Height = Child:GetSize()
 
 		local ParentWidth, ParentHeight = self:GetSize()
-		local Left, Right, Top, Bottom = self:GetDockPadding()
+
+		local PaddingLeft, PaddingRight, PaddingTop, PaddingBottom = self:GetDockPadding()
+		local MarginLeft, MarginRight, MarginTop, MarginBottom = Child:GetDockMargin()
 
 		local OffsetLeft, OffsetRight, OffsetTop, OffsetBottom = self:GetDockingOffset()
 
 		-- Offset the offsets if we're not the first child to avoid reapplying edge padding
-		-- TODO: Dock margin will take care of this when it's added
 		if OffsetLeft > 0 then
-			OffsetLeft = OffsetLeft - Left
+			OffsetLeft = OffsetLeft - PaddingLeft
 		end
 
 		if OffsetRight > 0 then
-			OffsetRight = OffsetRight - Right
+			OffsetRight = OffsetRight - PaddingRight
 		end
 
 		if OffsetTop > 0 then
-			OffsetTop = OffsetTop - Top
+			OffsetTop = OffsetTop - PaddingTop
 		end
 
 		if OffsetBottom > 0 then
-			OffsetBottom = OffsetBottom - Bottom
+			OffsetBottom = OffsetBottom - PaddingBottom
 		end
 
 		-- Layout according to dock type
 		if Dock == FILL then
-			X = Left + OffsetLeft
-			Y = Top + OffsetTop
+			X = PaddingLeft + OffsetLeft + MarginLeft
+			Y = PaddingTop + OffsetTop + MarginTop
 
-			Width = ParentWidth - ((Left + Right) + (OffsetLeft + OffsetRight))
-			Height = ParentHeight - ((Top + Bottom) + (OffsetTop + OffsetBottom))
+			Width = ParentWidth - ((PaddingLeft + PaddingRight) + (OffsetLeft + OffsetRight) + (MarginLeft + MarginRight))
+			Height = ParentHeight - ((PaddingTop + PaddingBottom) + (OffsetTop + OffsetBottom) + (MarginTop + MarginBottom))
 		elseif Dock == LEFT then
 			if Width <= 0 then
 				Width = ParentWidth * 0.25
 			end
 
-			X = Left + OffsetLeft
-			Y = Top + OffsetTop
+			X = PaddingLeft + OffsetLeft + MarginLeft
+			Y = PaddingTop + OffsetTop + MarginTop
 
-			Height = ParentHeight - ((Top + Bottom) + (OffsetTop + OffsetBottom))
+			Height = ParentHeight - ((PaddingTop + PaddingBottom) + (OffsetTop + OffsetBottom) + (MarginTop + MarginBottom))
 
-			OffsetLeft = OffsetLeft + Width
+			OffsetLeft = OffsetLeft + Width + MarginRight
 		elseif Dock == RIGHT then
 			if Width <= 0 then
 				Width = ParentWidth * 0.25
 			end
 
-			X = ParentWidth - ((Right + OffsetRight) + Width)
-			Y = Top + OffsetTop
+			X = ParentWidth - ((PaddingRight + OffsetRight + MarginRight) + Width)
+			Y = PaddingTop + OffsetTop + MarginTop
 
-			Height = ParentHeight - ((Top + Bottom) + (OffsetTop + OffsetBottom))
+			Height = ParentHeight - ((PaddingTop + PaddingBottom) + (OffsetTop + OffsetBottom) + (MarginTop + MarginBottom))
 
-			OffsetRight = OffsetRight + Width
+			OffsetRight = OffsetRight + Width + MarginLeft
 		elseif Dock == TOP then
 			if Height <= 0 then
 				Height = ParentHeight * 0.25
 			end
 
-			X = Left + OffsetLeft
-			Y = Top + OffsetTop
+			X = PaddingLeft + OffsetLeft + MarginLeft
+			Y = PaddingTop + OffsetTop + MarginTop
 
-			Width = ParentWidth - ((Left + Right) + (OffsetLeft + OffsetRight))
+			Width = ParentWidth - ((PaddingLeft + PaddingRight) + (OffsetLeft + OffsetRight) + (MarginTop + MarginBottom))
 
-			OffsetTop = OffsetTop + Height
+			OffsetTop = OffsetTop + Height + MarginBottom
 		elseif Dock == BOTTOM then
 			if Height <= 0 then
 				Height = ParentHeight * 0.25
 			end
 
-			X = Left + OffsetLeft
-			Y = ParentHeight - ((Bottom + OffsetBottom) + Height)
+			X = PaddingLeft + OffsetLeft + MarginLeft
+			Y = ParentHeight - ((PaddingBottom + OffsetBottom + MarginTop) + Height)
 
-			Width = ParentWidth - ((Left + Right) + (OffsetLeft + OffsetRight))
+			Width = ParentWidth - ((PaddingLeft + PaddingRight) + (OffsetLeft + OffsetRight) + (MarginTop + MarginBottom))
 
-			OffsetBottom = OffsetBottom + Height
+			OffsetBottom = OffsetBottom + Height + MarginTop
 		end
 
 		-- Remove the offset of the offsets
 		if OffsetLeft > 0 then
-			OffsetLeft = OffsetLeft + Left
+			OffsetLeft = OffsetLeft + PaddingLeft
 		end
 
 		if OffsetRight > 0 then
-			OffsetRight = OffsetRight + Right
+			OffsetRight = OffsetRight + PaddingRight
 		end
 
 		if OffsetTop > 0 then
-			OffsetTop = OffsetTop + Top
+			OffsetTop = OffsetTop + PaddingTop
 		end
 
 		if OffsetBottom > 0 then
-			OffsetBottom = OffsetBottom + Bottom
+			OffsetBottom = OffsetBottom + PaddingBottom
 		end
 
 		-- Update everyone
@@ -391,6 +397,10 @@ end
 
 function ELEMENT:GetDockPadding()
 	return self.m_iDockPaddingLeft, self.m_iDockPaddingRight, self.m_iDockPaddingTop, self.m_iDockPaddingBottom
+end
+
+function ELEMENT:GetDockMargin()
+	return self.m_iDockMarginLeft, self.m_iDockMarginRight, self.m_iDockMarginTop, self.m_iDockMarginBottom
 end
 
 function ELEMENT:AddChild(Child, Dock)
@@ -597,6 +607,13 @@ function ELEMENT:SetDockPadding(Left, Right, Top, Bottom)
 	self.m_iDockPaddingRight = tonumber(Right) or 0
 	self.m_iDockPaddingTop = tonumber(Top) or 0
 	self.m_iDockPaddingBottom = tonumber(Bottom) or 0
+end
+
+function ELEMENT:SetDockMargin(Left, Right, Top, Bottom)
+	self.m_iDockMarginLeft = tonumber(Left) or 0
+	self.m_iDockMarginRight = tonumber(Right) or 0
+	self.m_iDockMarginTop = tonumber(Top) or 0
+	self.m_iDockMarginBottom = tonumber(Bottom) or 0
 end
 
 --[[
