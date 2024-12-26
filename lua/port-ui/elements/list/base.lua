@@ -26,8 +26,8 @@ end
 function ELEMENT:InternalInit()
 	self.m_iX = 0
 	self.m_iY = 0
-	self.m_iMinimumWidth = 0
-	self.m_iMinimumHeight = 0
+	self.m_iMinimumWidth = 1
+	self.m_iMinimumHeight = 1
 	self.m_iWidth = 0
 	self.m_iHeight = 0
 
@@ -238,35 +238,6 @@ function ELEMENT:DoInternalLayout()
 	do
 		if self.m_bHasDirtyLayout then
 			self:LayoutChildren()
-			-- local Dock = self.m_iDock
-
-			-- if Dock ~= NODOCK then
-			-- 	local Parent = self.m_Parent
-
-			-- 	if IsValid(Parent) then
-			-- 		if not Parent:GetHasDirtyLayout() then
-			-- 			-- TODO: Look into this shit and find a better solution
-
-			-- 			-- This fixes some docking issues with the offset stacking but
-			-- 			-- it also causes issues with the docking "flickering"
-			-- 			-- as well as some bad performance because everything lays out constantly :/
-			-- 			-- Parent:InvalidateLayout()
-			-- 			-- Parent:InvalidateChildren(true)
-			-- 		end
-
-			-- 		local X, Y = self.m_iX, self.m_iY
-			-- 		local Width, Height = self.m_iWidth, self.m_iHeight
-
-			-- 		local ParentWidth, ParentHeight = Parent:GetSize()
-			-- 		local Left, Right, Top, Bottom = Parent:GetDockPadding()
-
-			-- 		local OffsetLeft, OffsetRight, OffsetTop, OffsetBottom = Parent:GetDockingOffset()
-
-
-
-
-			-- 	end
-			-- end
 
 			self.m_bHasDirtyLayout = false
 		end
