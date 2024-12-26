@@ -27,7 +27,7 @@ Result:
 - Due to this being made with View Ports, Elements rendered with a screen X or Y position off the screen bounds
 will be clipped due to DirectX clipping. This is NOT able to be fixed with `DisableClipping`.
 
-- Due to how the current Rendering and Input systems work there is no :IsHovered function for elements.
+- Due to how the current Rendering and Input systems work, there is no `:IsHovered` function for elements.
 Since there are no Render Targets in menu state, fixing this would require looping all elements multiple times per frame,
 which is very detrimental to performance.
 
