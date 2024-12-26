@@ -18,6 +18,12 @@ local input_IsKeyTrapping = input.IsKeyTrapping
 local dragndrop_IsDragging = dragndrop.IsDragging
 local draw_NoTexture = draw.NoTexture
 
+local portui_visualizelayout = portui.ConVars.portui_visualizelayout
+local portui_visualizelayout_time = portui.ConVars.portui_visualizelayout_time
+
+Renderer.Layouts = Renderer.Layouts or {}
+Renderer.RegisteredLayouts = Renderer.RegisteredLayouts or {}
+
 Renderer.ScreenWidth = ScrW()
 Renderer.ScreenHeight = ScrH()
 
@@ -88,6 +94,10 @@ function Renderer.RenderElement(Element, IsChild)
 	Renderer.CurrentlyRenderingElement = Element
 
 	if Element:GetHasDirtyLayout() then
+		if portui_visualizelayout:GetBool() then
+			Renderer.VisualizeLayout(Element)
+		end
+
 		Element:DoInternalLayout()
 	end
 
@@ -190,6 +200,8 @@ function Renderer.HandleInput()
 end
 
 function Renderer.RenderElements()
+	hook.Run("port-ui:PreRenderElements")
+
 	Renderer.ScreenWidth = ScrW()
 	Renderer.ScreenHeight = ScrH()
 	Renderer.MouseX = gui_MouseX()
@@ -199,6 +211,57 @@ function Renderer.RenderElements()
 
 	Renderer.RenderTopElements()
 	Renderer.HandleInput()
+
+	hook.Run("port-ui:PostRenderElements")
+end
+
+function Renderer.VisualizeLayout(Element)
+	if not Renderer.RegisteredLayouts[Element] then
+		table.insert(Renderer.Layouts, {
+			X = Element:GetRelativeX(),
+			Y = Element:GetRelativeY(),
+			Width = Element:GetWidth(),
+			Height = Element:GetHeight(),
+
+			Timestamp = SysTime(),
+			Element = Element
+		})
+
+		Renderer.RegisteredLayouts[Element] = true -- Don't spam red squares
+	end
+end
+
+function Renderer.RenderLayouts()
+	local CurrentTime = SysTime()
+	local Lifetime = portui_visualizelayout_time:GetFloat()
+
+	local Removals = {} -- Since we don't loop backwards removals will be stored here
+
+	for LayoutIndex = 1, #Renderer.Layouts do
+		local Layout = Renderer.Layouts[LayoutIndex]
+
+		surface.SetDrawColor(255, 0, 0, 50)
+		surface.DrawRect(Layout.X, Layout.Y, Layout.Width, Layout.Height)
+
+		surface.SetDrawColor(255, 0, 0, 255)
+		surface.DrawOutlinedRect(Layout.X, Layout.Y, Layout.Width, Layout.Height)
+
+		if CurrentTime - Layout.Timestamp >= Lifetime then
+			Removals[#Removals + 1] = LayoutIndex
+		end
+	end
+
+	for RemovalIndex = 1, #Removals do
+		local LayoutIndex = Removals[RemovalIndex]
+		local LayoutData = Renderer.Layouts[LayoutIndex]
+
+		if LayoutData then
+			Renderer.RegisteredLayouts[LayoutData.Element] = nil
+		end
+
+		table.remove(Renderer.Layouts, Removals[RemovalIndex])
+	end
 end
 
 hook.Add("DrawOverlay", "port-ui:RenderElements", Renderer.RenderElements)
+hook.Add("port-ui:PostRenderElements", "port-ui:RenderLayouts", Renderer.RenderLayouts)

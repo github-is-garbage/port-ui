@@ -1,6 +1,8 @@
 portui.IncludeRelative("detours/viewport.lua")
 portui.IncludeRelative("detours/scissorrect.lua")
 
+portui.IncludeRelative("convars.lua")
+
 portui.IncludeRelative("materials/materials.lua")
 portui.IncludeRelative("materials/transfer.lua")
 
