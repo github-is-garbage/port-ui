@@ -20,11 +20,11 @@ ExampleWindow:SetSize(200, 150)
 ExampleWindow:SetTitle("I am a Beautiful Window")
 ```
 
-You can view documentation for everything in the [docs](./docs/README.md) folder.
-
 Result:
 
 ![port-ui Window](./gitimg/window.png)
+
+You can view documentation for everything in the [docs](./docs/README.md) folder.
 
 ## Known Issues / Jank
 - Due to this being made with View Ports, Elements rendered with a screen X or Y position off the screen bounds
