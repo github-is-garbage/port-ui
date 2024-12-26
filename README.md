@@ -32,7 +32,7 @@ Since there are no Render Targets in menu state, fixing this would require loopi
 which is very detrimental to performance.
 
 - Text rendering is weird inside Elements because of the View Ports due to how the View Ports mess with aspect ratio.
-This is allegedly due to a lack of cam.Start availability in menu state.
+This is allegedly due to a lack of `cam.Start` availability in menu state.
 This has been partially remedied by the implementation of the `portui.Elements.Renderer.SwapPortRect()` and `portui.Elements.Renderer.UnSwapPortRect()` functions.
 
 - The ColorPicker's sub Elements don't have their handles in the correct location on instantiation
