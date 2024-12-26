@@ -113,6 +113,15 @@ function Renderer.RenderElement(Element, IsChild)
 	local ScissorZ, ScissorW = ViewPortX + ViewPortWidth, ViewPortY + ViewPortHeight
 
 	if IsChild then
+		local Parent = Element:GetParent()
+
+		local ParentX, ParentY = Parent:GetRelativePos()
+		local ParentWidth, ParentHeight = Parent:GetSize()
+
+		-- Make sure it's visible within the parent
+		if ElementX + ElementWidth < 0 or ElementY + ElementHeight < 0 then return end
+		if ElementX > ParentX + ParentWidth or ElementY > ParentY + ParentHeight then return end
+
 		-- Clip everything to the topmost element's bounds
 		local LastViewPortX, LastViewPortY, LastViewPortWidth, LastViewPortHeight = render_GetViewPort()
 
