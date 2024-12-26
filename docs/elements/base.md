@@ -287,6 +287,8 @@ Called after the Element has been layed out, allows modifying of layout.
 <details>
 <summary>Variables</summary>
 
+*While you can modify these variables to bypass accessors, it may cause undesired behavior.*
+
 `m_iX`: The current X position of the Element. \
 `m_iY`: The current Y postiion of the Element. \
 `m_iMinimumWidth`: The minimum Width of the Element. \
