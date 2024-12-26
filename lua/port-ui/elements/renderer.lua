@@ -101,11 +101,6 @@ function Renderer.RenderElement(Element, IsChild)
 		return
 	end
 
-	if Element:GetHasInputEnabled() and Renderer.MouseInBounds(ElementX, ElementY, ElementX + ElementWidth, ElementY + ElementHeight) then
-		-- This is a bit of a bad way to get the hovered element because it means there can't be an :IsHovered function
-		Renderer.HoveredElement = Element
-	end
-
 	local ViewPortX, ViewPortY = ElementX, ElementY
 	local ViewPortWidth, ViewPortHeight = ElementWidth, ElementHeight
 
@@ -135,6 +130,11 @@ function Renderer.RenderElement(Element, IsChild)
 		Renderer.TopViewPortY = ViewPortY
 		Renderer.TopViewPortWidth = ViewPortWidth
 		Renderer.TopViewPortHeight = ViewPortHeight
+	end
+
+	if Element:GetHasInputEnabled() and Renderer.MouseInBounds(ElementX, ElementY, ElementX + ElementWidth, ElementY + ElementHeight) then
+		-- This is a bit of a bad way to get the hovered element because it means there can't be an :IsHovered function
+		Renderer.HoveredElement = Element
 	end
 
 	draw_NoTexture()
