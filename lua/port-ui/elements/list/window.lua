@@ -4,13 +4,16 @@ local ELEMENT = {}
 
 AccessorFunc(ELEMENT, "m_iTitleBarHeight", "TitleBarHeight", FORCE_NUMBER)
 AccessorFunc(ELEMENT, "m_bDraggable", "Draggable", FORCE_BOOL)
+AccessorFunc(ELEMENT, "m_bResizable", "Resizable", FORCE_BOOL)
 
 function ELEMENT:Init()
 	self.m_DragData = {}
 
 	self:SetTitleBarHeight(20)
 	self:SetDraggable(true)
+	self:SetResizable(true)
 
+	self:SetMinimumSize(75, 75)
 	self:SetDockPadding(4, 4, self:GetTitleBarHeight() + 4, 4)
 
 	-- Title
@@ -61,14 +64,21 @@ function ELEMENT:Think()
 		return
 	end
 
-	local NewX = gui.MouseX() - self.m_DragData.MouseX
-	local NewY = gui.MouseY() - self.m_DragData.MouseY
+	if self.m_DragData.Dragging then
+		local NewX = gui.MouseX() - self.m_DragData.MouseX
+		local NewY = gui.MouseY() - self.m_DragData.MouseY
 
-	NewX = math.Clamp(NewX, 0, Renderer.ScreenWidth)
-	NewY = math.Clamp(NewY, 0, Renderer.ScreenHeight)
+		NewX = math.Clamp(NewX, 0, Renderer.ScreenWidth)
+		NewY = math.Clamp(NewY, 0, Renderer.ScreenHeight)
 
-	self:SetX(NewX)
-	self:SetY(NewY)
+		self:SetX(NewX)
+		self:SetY(NewY)
+	else
+		local NewWidth = gui.MouseX() - self.m_DragData.MouseX
+		local NewHeight = gui.MouseY() - self.m_DragData.MouseY
+
+		self:SetSize(NewWidth, NewHeight)
+	end
 end
 
 function ELEMENT:PaintForeground(RenderWidth, RenderHeight)
@@ -95,13 +105,23 @@ function ELEMENT:PaintForeground(RenderWidth, RenderHeight)
 end
 
 function ELEMENT:OnLeftClick(MouseX, MouseY)
-	if not self:GetDraggable() then return end
-	if MouseY > self:GetTitleBarHeight() then return end
+	if MouseY <= self:GetTitleBarHeight() then
+		if self:GetDraggable() then
+			self.m_DragData.Dragging = true
+			self.m_DragData.MouseX = MouseX
+			self.m_DragData.MouseY = MouseY
 
-	self.m_DragData.MouseX = MouseX
-	self.m_DragData.MouseY = MouseY
+			portui.Elements.Input.StartGrabbingInput(self)
+		end
+	elseif MouseX >= self:GetWidth() - 20 and MouseY >= self:GetHeight() - 20 then -- TODO: Resizing along all 4 edges
+		if self:GetResizable() then
+			self.m_DragData.Dragging = false
+			self.m_DragData.MouseX = gui.MouseX() - self:GetWidth()
+			self.m_DragData.MouseY = gui.MouseY() - self:GetHeight()
 
-	portui.Elements.Input.StartGrabbingInput(self)
+			portui.Elements.Input.StartGrabbingInput(self)
+		end
+	end
 end
 
 function ELEMENT:PerformLayout(Width, Height)

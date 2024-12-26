@@ -4,6 +4,7 @@ local ELEMENT = {}
 
 function ELEMENT:Init()
 	WindowMeta.Init(self)
+	self:SetResizable(false)
 
 	self:SetPos(gui.MouseX(), gui.MouseY())
 
