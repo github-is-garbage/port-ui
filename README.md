@@ -14,9 +14,10 @@ RunString(file.Read("addons/port-ui/lua/port-ui/init.lua", "GAME"), "addons/port
 4. Now you can access the `portui` global table and create elements like so:
 
 ```lua
-local ExamplePanel = portui.Elements.Create("Window")
-ExamplePanel:SetPos(10, 10)
-ExamplePanel:SetSize(100, 100)
+local ExampleWindow = portui.Elements.Create("Window")
+ExampleWindow:SetPos(10, 10)
+ExampleWindow:SetSize(200, 150)
+ExampleWindow:SetTitle("I am a Beautiful Window")
 ```
 
 Result:
