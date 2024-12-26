@@ -105,8 +105,6 @@ function Renderer.RenderElement(Element, IsChild)
 		if ElementX > ParentX + ParentWidth or ElementY > ParentY + ParentHeight then return end
 	end
 
-	Renderer.CurrentlyRenderingElement = Element
-
 	if Element:GetHasDirtyLayout() then
 		if portui_visualizelayout:GetBool() then
 			Renderer.VisualizeLayout(Element)
@@ -150,6 +148,8 @@ function Renderer.RenderElement(Element, IsChild)
 	end
 
 	draw_NoTexture()
+
+	Renderer.CurrentlyRenderingElement = Element
 
 	render_SetViewPort(ViewPortX, ViewPortY, ViewPortWidth, ViewPortHeight)
 	do
