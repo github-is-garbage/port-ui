@@ -94,3 +94,8 @@ local ColorRef = Color(144, 67, 67, 200)
 local Colorbox = Window:AddChild("Colorbox", TOP)
 Colorbox:SetSize(20, 20)
 Colorbox:SetColor(ColorRef) -- Passed by reference, will modify the variable passed in
+Colorbox:SetDockMargin(0, 0, 0, 4)
+
+-- Text
+local Textbox = Window:AddChild("Textbox", TOP)
+Textbox:SetHeight(20)
