@@ -74,10 +74,13 @@ function ELEMENT:Think()
 		self:SetX(NewX)
 		self:SetY(NewY)
 	else
-		local NewWidth = gui.MouseX() - self.m_DragData.MouseX
-		local NewHeight = gui.MouseY() - self.m_DragData.MouseY
+		if self.m_DragData.SizeRight then
+			self:SetWidth(gui.MouseX() - self.m_DragData.MouseX)
+		end
 
-		self:SetSize(NewWidth, NewHeight)
+		if self.m_DragData.SizeBottom then
+			self:SetHeight(gui.MouseY() - self.m_DragData.MouseY)
+		end
 	end
 end
 
@@ -108,19 +111,29 @@ function ELEMENT:OnLeftClick(MouseX, MouseY)
 	if MouseY <= self:GetTitleBarHeight() then
 		if self:GetDraggable() then
 			self.m_DragData.Dragging = true
+
 			self.m_DragData.MouseX = MouseX
 			self.m_DragData.MouseY = MouseY
 
 			portui.Elements.Input.StartGrabbingInput(self)
 		end
-	elseif MouseX >= self:GetWidth() - 20 and MouseY >= self:GetHeight() - 20 then -- TODO: Resizing along all 4 edges
-		if self:GetResizable() then
-			self.m_DragData.Dragging = false
-			self.m_DragData.MouseX = gui.MouseX() - self:GetWidth()
-			self.m_DragData.MouseY = gui.MouseY() - self:GetHeight()
+	elseif self:GetResizable() then -- TODO: Resizing along left and top edges
+		self.m_DragData.Dragging = false
 
-			portui.Elements.Input.StartGrabbingInput(self)
+		local Width, Height = self:GetSize()
+
+		if MouseX >= Width - 10 and MouseY >= Height - 10 then -- Bottom right corner resizes both
+			self.m_DragData.SizeRight = true
+			self.m_DragData.SizeBottom = true
+		else
+			self.m_DragData.SizeRight = MouseX >= Width - 10
+			self.m_DragData.SizeBottom = MouseY >= Height - 10
 		end
+
+		self.m_DragData.MouseX = gui.MouseX() - Width
+		self.m_DragData.MouseY = gui.MouseY() - Height
+
+		portui.Elements.Input.StartGrabbingInput(self)
 	end
 end
 
