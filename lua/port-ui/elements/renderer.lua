@@ -91,31 +91,8 @@ function Renderer.RenderElement(Element, IsChild)
 		return
 	end
 
-	Renderer.CurrentlyRenderingElement = Element
-
-	if Element:GetHasDirtyLayout() then
-		if portui_visualizelayout:GetBool() then
-			Renderer.VisualizeLayout(Element)
-		end
-
-		Element:DoInternalLayout()
-	end
-
-	local ScreenWidth, ScreenHeight = Renderer.ScreenWidth, Renderer.ScreenHeight
-
 	local ElementX, ElementY = Element:GetRelativePos()
 	local ElementWidth, ElementHeight = Element:GetSize()
-
-	if ElementWidth < 1 or ElementHeight < 1 then
-		-- Can't see any of it
-		return
-	end
-
-	local ViewPortX, ViewPortY = ElementX, ElementY
-	local ViewPortWidth, ViewPortHeight = ElementWidth, ElementHeight
-
-	local ScissorX, ScissorY = ViewPortX, ViewPortY
-	local ScissorZ, ScissorW = ViewPortX + ViewPortWidth, ViewPortY + ViewPortHeight
 
 	if IsChild then
 		local Parent = Element:GetParent()
@@ -126,7 +103,32 @@ function Renderer.RenderElement(Element, IsChild)
 		-- Make sure it's visible within the parent
 		if ElementX + ElementWidth < 0 or ElementY + ElementHeight < 0 then return end
 		if ElementX > ParentX + ParentWidth or ElementY > ParentY + ParentHeight then return end
+	end
 
+	Renderer.CurrentlyRenderingElement = Element
+
+	if Element:GetHasDirtyLayout() then
+		if portui_visualizelayout:GetBool() then
+			Renderer.VisualizeLayout(Element)
+		end
+
+		Element:DoInternalLayout()
+	end
+
+	if ElementWidth < 1 or ElementHeight < 1 then
+		-- Can't see any of it
+		return
+	end
+
+	local ScreenWidth, ScreenHeight = Renderer.ScreenWidth, Renderer.ScreenHeight
+
+	local ViewPortX, ViewPortY = ElementX, ElementY
+	local ViewPortWidth, ViewPortHeight = ElementWidth, ElementHeight
+
+	local ScissorX, ScissorY = ViewPortX, ViewPortY
+	local ScissorZ, ScissorW = ViewPortX + ViewPortWidth, ViewPortY + ViewPortHeight
+
+	if IsChild then
 		-- Clip everything to the topmost element's bounds
 		local LastViewPortX, LastViewPortY, LastViewPortWidth, LastViewPortHeight = render_GetViewPort()
 
