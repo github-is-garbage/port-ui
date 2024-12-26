@@ -45,8 +45,13 @@ end
 function ELEMENT:SetValue(Value)
 	Value = tonumber(Value) or 0
 
+	-- These values won't exist until after :Init has ran
+	local DecimalPoints = self:GetDecimalPoints() or 0
+	local Minimum = self:GetMinimumValue() or 0
+	local Maximum = self:GetMaximumValue() or 0
+
 	local OldValue = self.m_flValue
-	self.m_flValue = math.Clamp(math.Round(Value, self.m_iDecimalPoints), self.m_flMinimumValue, self.m_flMaximumValue)
+	self.m_flValue = math.Clamp(math.Round(Value, DecimalPoints), Minimum, Maximum)
 
 	if self.m_flValue == OldValue then return end
 
@@ -55,6 +60,24 @@ function ELEMENT:SetValue(Value)
 	end
 
 	self:OnValueChanged(OldValue, self.m_flValue)
+end
+
+function ELEMENT:SetDecimalPoints(DecimalPoints)
+	self.m_iDecimalPoints = tonumber(DecimalPoints) or 0
+
+	self:SetValue(self:GetValue())
+end
+
+function ELEMENT:SetMinimumValue(Value)
+	self.m_flMinimumValue = tonumber(Value) or 0
+
+	self:SetValue(self:GetValue())
+end
+
+function ELEMENT:SetMaximumValue(Value)
+	self.m_flMaximumValue = tonumber(Value) or 0
+
+	self:SetValue(self:GetValue())
 end
 
 function ELEMENT:PaintBackground() end
