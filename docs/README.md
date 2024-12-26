@@ -7,7 +7,7 @@ It's kind of important to know how to actually use it, eh?
 
 [Base Element](./elements/base.md)
 
-[Button](./elements/button.md)
+[Button](./elements/button.md) \
 [Checkbox](./elements/checkbox.md) \
 [Label](./elements/label.md) \
 [Labeled Checkbox](./elements/labeled_checkbox.md) \
