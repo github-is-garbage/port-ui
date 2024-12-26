@@ -463,7 +463,7 @@ end
 function ELEMENT:SetWidth(Width)
 	local OldWidth = self.m_iWidth
 
-	self.m_iWidth = math.max(tonumber(Width) or 0, self.m_iMinimumWidth)
+	self.m_iWidth = math.max(tonumber(Width) or 0, self.m_iMinimumWidth, 0)
 
 	if OldWidth == self.m_iWidth then return end
 
@@ -474,7 +474,7 @@ end
 function ELEMENT:SetHeight(Height)
 	local OldHeight = self.m_iHeight
 
-	self.m_iHeight = math.max(tonumber(Height) or 0, self.m_iMinimumHeight)
+	self.m_iHeight = math.max(tonumber(Height) or 0, self.m_iMinimumHeight, 0)
 
 	if OldHeight == self.m_iHeight then return end
 
@@ -485,8 +485,8 @@ end
 function ELEMENT:SetSize(Width, Height)
 	local OldWidth, OldHeight = self.m_iWidth, self.m_iHeight
 
-	self.m_iWidth = math.max(tonumber(Width) or 0, self.m_iMinimumWidth)
-	self.m_iHeight = math.max(tonumber(Height) or 0, self.m_iMinimumHeight)
+	self.m_iWidth = math.max(tonumber(Width) or 0, self.m_iMinimumWidth, 0)
+	self.m_iHeight = math.max(tonumber(Height) or 0, self.m_iMinimumHeight, 0)
 
 	if OldWidth == self.m_iWidth and OldHeight == self.m_iHeight then return end
 
