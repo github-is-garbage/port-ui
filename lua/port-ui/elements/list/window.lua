@@ -5,6 +5,7 @@ local ELEMENT = {}
 AccessorFunc(ELEMENT, "m_iTitleBarHeight", "TitleBarHeight", FORCE_NUMBER)
 AccessorFunc(ELEMENT, "m_bDraggable", "Draggable", FORCE_BOOL)
 AccessorFunc(ELEMENT, "m_bResizable", "Resizable", FORCE_BOOL)
+AccessorFunc(ELEMENT, "m_iResizeTolerance", "ResizeTolerance", FORCE_NUMBER)
 
 function ELEMENT:Init()
 	self.m_DragData = {}
@@ -12,6 +13,7 @@ function ELEMENT:Init()
 	self:SetTitleBarHeight(20)
 	self:SetDraggable(true)
 	self:SetResizable(true)
+	self:SetResizeTolerance(10)
 
 	self:SetMinimumSize(75, 75)
 	self:SetDockPadding(4, 4, self:GetTitleBarHeight() + 4, 4)
@@ -121,13 +123,14 @@ function ELEMENT:OnLeftClick(MouseX, MouseY)
 		self.m_DragData.Dragging = false
 
 		local Width, Height = self:GetSize()
+		local ResizeTolerance = self:GetResizeTolerance()
 
-		if MouseX >= Width - 10 and MouseY >= Height - 10 then -- Bottom right corner resizes both
+		if MouseX >= Width - ResizeTolerance and MouseY >= Height - ResizeTolerance then -- Bottom right corner resizes both
 			self.m_DragData.SizeRight = true
 			self.m_DragData.SizeBottom = true
 		else
-			self.m_DragData.SizeRight = MouseX >= Width - 10
-			self.m_DragData.SizeBottom = MouseY >= Height - 10
+			self.m_DragData.SizeRight = MouseX >= Width - ResizeTolerance
+			self.m_DragData.SizeBottom = MouseY >= Height - ResizeTolerance
 		end
 
 		self.m_DragData.MouseX = gui.MouseX() - Width
