@@ -1,4 +1,4 @@
-## Base Element
+## Base
 This Element contains all basic functionality.
 All functions, hooks and variables present in this Element are present in all other Elements.
 
