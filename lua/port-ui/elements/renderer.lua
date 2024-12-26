@@ -87,10 +87,6 @@ function Renderer.MouseInBounds(X1, Y1, X2, Y2)
 end
 
 function Renderer.RenderElement(Element, IsChild)
-	if not Element:GetVisible() then
-		return
-	end
-
 	local ElementX, ElementY = Element:GetRelativePos()
 	local ElementWidth, ElementHeight = Element:GetSize()
 
@@ -103,6 +99,12 @@ function Renderer.RenderElement(Element, IsChild)
 		-- Make sure it's visible within the parent
 		if ElementX + ElementWidth < 0 or ElementY + ElementHeight < 0 then return end
 		if ElementX > ParentX + ParentWidth or ElementY > ParentY + ParentHeight then return end
+	end
+
+	xpcall(Element.Think, ErrorNoHaltWithStack, Element) -- Give Think a chance to change visibility
+
+	if not Element:GetVisible() then
+		return
 	end
 
 	if Element:GetHasDirtyLayout() then
@@ -153,8 +155,6 @@ function Renderer.RenderElement(Element, IsChild)
 
 	render_SetViewPort(ViewPortX, ViewPortY, ViewPortWidth, ViewPortHeight)
 	do
-		xpcall(Element.Think, ErrorNoHaltWithStack, Element)
-
 		xpcall(Element.PaintBackground, ErrorNoHaltWithStack, Element, ScreenWidth, ScreenHeight, ElementWidth, ElementHeight)
 		xpcall(Element.PaintForeground, ErrorNoHaltWithStack, Element, ScreenWidth, ScreenHeight, ElementWidth, ElementHeight)
 
