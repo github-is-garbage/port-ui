@@ -24,7 +24,8 @@ Result:
 
 ![port-ui Window](./gitimg/window.png)
 
-You can view documentation for everything in the [docs](./docs/README.md) folder.
+> [!TIP]
+> You can view documentation for everything in the [docs](./docs/README.md) folder.
 
 > [!IMPORTANT]
 > ### Known Issues / Jank
