@@ -1,6 +1,20 @@
 # Port UI Documentation
 It's kind of important to know how to actually use it, eh?
 
+## Globals
+<details>
+<summary>Click to Open</summary>
+
+[portui](./globals/portui.md)
+
+[ConVars](./globals/convars.md) \
+[Materials](./globals/materials.md) \
+[Elements](./globals/elements.md) \
+[Input](./globals/input.md) \
+[Renderer](./globals/renderer.md)
+
+</details>
+
 ## Elements
 <details>
 <summary>Click to Open</summary>
