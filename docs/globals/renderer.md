@@ -1,5 +1,5 @@
 ## Render
-Things in the global `portui.Render` table.
+Things in the global `portui.Renderer` table.
 
 `table Render.Layouts` \
 A table containing layouts to be visualized. \
