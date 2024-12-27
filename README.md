@@ -5,7 +5,7 @@ Using [render.SetViewPort](https://gmodwiki.com/render.SetViewPort) and [render.
 ## Installation and Usage
 1. Download the repository [here](https://github.com/github-is-garbage/port-ui/archive/refs/heads/main.zip)
 2. Extract the ZIP file into `garrysmod/addons/port-ui`
-3. Add the following line to your `garrysmod/lua/menu/menu.lua` file to load the script:
+3. Add the following line at the bottom of your `garrysmod/lua/menu/menu.lua` file to load the script:
 
 ```lua
 RunString(file.Read("addons/port-ui/lua/port-ui/init.lua", "GAME"), "addons/port-ui/lua/port-ui/init.lua")
