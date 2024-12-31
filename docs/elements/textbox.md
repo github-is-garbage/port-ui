@@ -33,7 +33,8 @@ Sets the text of the Textbox.
 <details>
 <summary>Hooks</summary>
 
-No additional hooks.
+`void Element:OnValueChanged(string OldValue, string NewValue)` \
+Called when the text of the Textbox changes.
 
 </details>
 

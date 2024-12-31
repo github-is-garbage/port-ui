@@ -26,6 +26,10 @@ function ELEMENT:Init()
 	hook.Add("port-ui:ElementMiddleClicked", self, self.OnElementClicked)
 end
 
+function ELEMENT:OnValueChanged(OldValue, NewValue)
+	-- For override
+end
+
 function ELEMENT:Think()
 	if portui.Elements.Input.GetInputElement() ~= self then
 		return
@@ -53,6 +57,8 @@ function ELEMENT:Think()
 
 		self:SetText(CurrentText .. KeyText)
 	end
+
+	self:OnValueChanged(CurrentText, self:GetText())
 end
 
 function ELEMENT:PaintBackground(RenderWidth, RenderHeight)
