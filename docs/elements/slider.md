@@ -66,7 +66,7 @@ Up = lower value, Down = higher value.
 <summary>Hooks</summary>
 
 `void Element:OnValueChanged(number OldValue, number NewValue)` \
-Calls when the check state of the Slider changes.
+Calls when the value of the Slider changes.
 
 </details>
 
