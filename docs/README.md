@@ -30,6 +30,7 @@ It's kind of important to know how to actually use it, eh?
 [Window](./elements/window.md) \
 [Radio Button](./elements/radio_button.md) \
 [Slider](./elements/slider.md) \
-[Popup Window](./elements/popup_window.md)
+[Popup Window](./elements/popup_window.md) \
+[Color Box](./elements/colorbox.md)
 
 </details>
