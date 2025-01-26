@@ -26,8 +26,8 @@ end
 function ELEMENT:InternalInit()
 	self.m_iX = 0
 	self.m_iY = 0
-	self.m_iMinimumWidth = 1
-	self.m_iMinimumHeight = 1
+	self.m_iMinimumWidth = 0
+	self.m_iMinimumHeight = 0
 	self.m_iWidth = 0
 	self.m_iHeight = 0
 
@@ -218,8 +218,8 @@ function ELEMENT:LayoutChild(Child)
 		-- Update everyone
 		self:UpdateDockingOffset(OffsetLeft, OffsetRight, OffsetTop, OffsetBottom)
 
-		Child:SetPos(X, Y)
 		Child:SetSize(Width, Height)
+		Child:SetPos(X, Y)
 	end
 
 	Child:LayoutChildren()
