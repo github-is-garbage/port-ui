@@ -1,3 +1,5 @@
+local BaseMeta = FindMetaTable("portui_Base")
+
 local Renderer = portui.Elements.Renderer
 
 local ELEMENT = {}
@@ -86,7 +88,7 @@ function ELEMENT:Think()
 	end
 end
 
-function ELEMENT:PaintForeground(RenderWidth, RenderHeight)
+function ELEMENT:PaintTitleBar(RenderWidth, RenderHeight, Width, Height)
 	local TitleBarHeight = self:GetTitleBarHeight()
 	local TitleBarRenderHeight = self:CalculatePixelsHeight(TitleBarHeight)
 
@@ -95,18 +97,12 @@ function ELEMENT:PaintForeground(RenderWidth, RenderHeight)
 
 	surface.SetDrawColor(0, 0, 0, 255)
 	surface.DrawLine(0, TitleBarRenderHeight, RenderWidth, TitleBarRenderHeight)
+end
 
-	-- Normal border
-	local WidthOffset = self:CalculatePixelsWidth(1)
-	local HeightOffset = self:CalculatePixelsHeight(1)
+function ELEMENT:PaintForeground(RenderWidth, RenderHeight,  Width, height)
+	self:PaintTitleBar(RenderWidth, RenderHeight,  Width, height)
 
-	RenderWidth = RenderWidth - WidthOffset
-	RenderHeight = RenderHeight - HeightOffset
-
-	surface.DrawLine(0, 0, RenderWidth, 0)
-	surface.DrawLine(RenderWidth, 0, RenderWidth, RenderHeight)
-	surface.DrawLine(RenderWidth, RenderHeight, 0, RenderHeight)
-	surface.DrawLine(0, RenderHeight, 0, 0)
+	BaseMeta.PaintForeground(self, RenderWidth, RenderHeight,  Width, height)
 end
 
 function ELEMENT:OnLeftClick(MouseX, MouseY)

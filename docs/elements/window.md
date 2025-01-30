@@ -50,7 +50,8 @@ Sets the tolerance from the edges of the Window that resizing can be triggered.
 <details>
 <summary>Hooks</summary>
 
-No additional hooks.
+`void Element:PaintTitleBar(number RenderWidth, number RenderHeight, number Width, number Height)` \
+Called from `:PaintForeground` hook to render the title bar.
 
 </details>
 
