@@ -20,6 +20,8 @@ function ELEMENT:Init()
 	self:SetMinimumSize(75, 75)
 	self:SetDockPadding(4, 4, self:GetTitleBarHeight() + 4, 4)
 
+	self.m_matUp = Material("vgui/gradient-u")
+
 	-- Title
 	local Title = portui.Elements.Create("Label")
 	Title:SetParent(self)
@@ -92,8 +94,12 @@ function ELEMENT:PaintTitleBar(RenderWidth, RenderHeight, Width, Height)
 	local TitleBarHeight = self:GetTitleBarHeight()
 	local TitleBarRenderHeight = self:CalculatePixelsHeight(TitleBarHeight)
 
-	surface.SetDrawColor(100, 100, 100, 255)
+	surface.SetDrawColor(50, 50, 50, 255)
 	surface.DrawRect(0, 0, RenderWidth, TitleBarRenderHeight)
+
+	surface.SetDrawColor(50, 160, 255, 200)
+	surface.SetMaterial(self.m_matUp)
+	surface.DrawTexturedRect(0, 0, RenderWidth, TitleBarRenderHeight)
 
 	surface.SetDrawColor(0, 0, 0, 255)
 	surface.DrawLine(0, TitleBarRenderHeight, RenderWidth, TitleBarRenderHeight)

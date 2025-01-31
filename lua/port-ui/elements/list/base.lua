@@ -71,7 +71,7 @@ end
 
 function ELEMENT:PaintBackground(RenderWidth, RenderHeight, Width, Height) -- Render relative to element space, clipped
 	-- For override
-	surface.SetDrawColor(255, 255, 255, 150)
+	surface.SetDrawColor(50, 50, 50, 250)
 	surface.DrawRect(0, 0, RenderWidth, RenderHeight)
 end
 
