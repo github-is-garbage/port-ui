@@ -105,10 +105,10 @@ function ELEMENT:PaintTitleBar(RenderWidth, RenderHeight, Width, Height)
 	surface.DrawLine(0, TitleBarRenderHeight, RenderWidth, TitleBarRenderHeight)
 end
 
-function ELEMENT:PaintForeground(RenderWidth, RenderHeight,  Width, height)
-	self:PaintTitleBar(RenderWidth, RenderHeight,  Width, height)
+function ELEMENT:PaintForeground(RenderWidth, RenderHeight,  Width, Height)
+	self:PaintTitleBar(RenderWidth, RenderHeight,  Width, Height)
 
-	BaseMeta.PaintForeground(self, RenderWidth, RenderHeight,  Width, height)
+	BaseMeta.PaintForeground(self, RenderWidth, RenderHeight,  Width, Height)
 end
 
 function ELEMENT:OnLeftClick(MouseX, MouseY)
