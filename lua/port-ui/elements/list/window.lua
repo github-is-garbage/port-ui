@@ -12,7 +12,7 @@ AccessorFunc(ELEMENT, "m_iResizeTolerance", "ResizeTolerance", FORCE_NUMBER)
 function ELEMENT:Init()
 	self.m_DragData = {}
 
-	self:SetTitleBarHeight(20)
+	self:SetTitleBarHeight(22)
 	self:SetDraggable(true)
 	self:SetResizable(true)
 	self:SetResizeTolerance(10)
@@ -36,7 +36,7 @@ function ELEMENT:Init()
 	local CloseButton = portui.Elements.Create("Button")
 	CloseButton:SetParent(self)
 	CloseButton:SetText("X")
-	CloseButton:SetSize(self:GetTitleBarHeight() * 0.8, self:GetTitleBarHeight() * 0.8)
+	CloseButton:SetSize(17, 17)
 
 	function CloseButton:PaintBackground(RenderWidth, RenderHeight, Width, Height)
 		surface.SetDrawColor(255, 0, 0, 255)
