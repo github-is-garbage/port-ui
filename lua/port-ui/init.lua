@@ -18,15 +18,22 @@ function portui.CompileInclude(Path)
 	ModuleName = string.sub(ModuleName, 0, -ExtensionOffset)
 
 	local ModuleContent = file.Read(Path, "GAME")
-	local ModuleFunction = CompileString(ModuleContent, Path, false)
 
-	if not isfunction(ModuleFunction) then
-		ErrorNoHalt(ModuleFunction, "\n")
+	local ErrorMessage = RunString(ModuleContent, Path, false)
 
-		return
+	if isstring(ErrorMessage) then
+		ErrorNoHalt(ErrorMessage, "\n")
 	end
 
-	ModuleFunction()
+	-- local ModuleFunction = CompileString(ModuleContent, Path, false)
+
+	-- if not isfunction(ModuleFunction) then
+	-- 	ErrorNoHalt(ModuleFunction, "\n")
+
+	-- 	return
+	-- end
+
+	-- ModuleFunction()
 end
 
 function portui.GetCurrentPath(Level)
